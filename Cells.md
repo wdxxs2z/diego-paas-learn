@@ -1569,6 +1569,7 @@ https://github.com/cloudfoundry-incubator/garden-linux/blob/964c92719378f8ef0bdb
 
 补一个知识，在构建每一层的时候，都会在这一layer的创建json和size数据，这个和docker相符。</br>
 /var/vcap/data/garden/btrfs_graph/{layerId}</br>
+
 		{
 		  "id": "ff365bfa7ca61680fbbe4b27d3473d7b5d76adde64c199fb312dcd30c3302b0f", 
 		  "parent": "a827709e978385e0e2998703fbe17f934c1a6bc233c7eb98820140ed5e279c23", 
@@ -1649,14 +1650,16 @@ https://github.com/cloudfoundry-incubator/garden-linux/blob/964c92719378f8ef0bdb
 garden无关了，因为它依赖的是docker的实现，copy on write 机制，说到具体用，可能你也猜到了，就是在配额管理的时候使用：</br>
 https://github.com/cloudfoundry-incubator/garden-linux/blob/6b419ed1e7020930425adc05bc29602dc774eb16/linux_container/quota_manager/btrfs_quota_manager.go</br>
 这里就不进去了，主要为btrfs的磁盘配额进行限制和获取btrfs磁盘配额的具体信息等。</br>
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-接下来看看garden是如何构建网络的：</br>
+
+
+* 接下来看看garden是如何构建网络的：</br>
 我们知道docker在创建网络时会分三步，一个是在deamon启动的时候会初始化一个docker bridge,第二步则在创建容器的时候或者说启动的时候会分配一个veth pair，一端在容器里，
 一端patch到docker网桥上，最后是将容器一端的container分配到现有的PID中也就是namespace中。</br>
 这里garden比较特别，它会在启动每个容器的时候创建veth的同时会为每个子网（CIDR 30）创建一个bridge，并将veth的另一端patch到这个bridge上去</br>
 https://github.com/cloudfoundry-incubator/garden-linux/blob/master/network/configure.go#L55</br>
 
 * Bridge:
+
 		Veth interface {
 			Create(hostIfcName, containerIfcName string) (*net.Interface, *net.Interface, error)
 		}
