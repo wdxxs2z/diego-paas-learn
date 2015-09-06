@@ -150,6 +150,7 @@ https://github.com/cloudfoundry-incubator/docker_app_lifecycle/blob/master/helpe
 3.当镜像完全下载完成后，就可以使用luncher来把这个镜像run起来</br>
 https://github.com/cloudfoundry-incubator/docker_app_lifecycle/blob/master/launcher/main.go#L20</br>
 设置环境变量：</br>
+
 		err := json.Unmarshal([]byte(os.Getenv("VCAP_APPLICATION")), &vcapAppEnv)
 		if err == nil {
 			vcapAppEnv["host"] = "0.0.0.0"
@@ -171,8 +172,11 @@ https://github.com/cloudfoundry-incubator/docker_app_lifecycle/blob/master/launc
 				os.Setenv("VCAP_APPLICATION", string(mungedAppEnv))
 			}
 		}
+		
 </br>
+
 如果DockerFile中有启动命令就将其按照dockerfile里定义的entrypoint里的命令来启动</br>
+
 		if startCommand != "" {
 			syscall.Exec("/bin/sh", []string{
 				"/bin/sh",
