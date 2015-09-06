@@ -26,8 +26,7 @@ ip,被分配到了那个cells里等等</br>
 		-ccPassword=internal-password \
 		-skipCertVerify=true \
 		-debugAddr=0.0.0.0:17011 \
-		-lifecycle buildpack/cflinuxfs2:buildpack_app_lifecycle/buildpack_app_lifecycle.tgz -lifecycle buildpack/windows20
-12R2:windows_app_lifecycle/windows_app_lifecycle.tgz -lifecycle docker:docker_app_lifecycle/docker_app_lifecycle.tgz \
+		-lifecycle buildpack/cflinuxfs2:buildpack_app_lifecycle/buildpack_app_lifecycle.tgz -lifecycle buildpack/windows2012R2:windows_app_lifecycle/windows_app_lifecycle.tgz -lifecycle docker:docker_app_lifecycle/docker_app_lifecycle.tgz \
 		-dockerStagingStack=cflinuxfs2 \
 		-fileServerURL=http://file-server.service.cf.internal:8080 \
 		-ccUploaderURL=http://cc-uploader.service.cf.internal:9090 \
@@ -37,102 +36,102 @@ ip,被分配到了那个cells里等等</br>
 		
 因为stager本身就是用来处理编译任务的，所以这里可以看到三个lifecycle,说明支持buildpack、docker、windows </br>
 
-分析：</br>
+### 分析：</br>
     stager负责处理cc端发来的编译请求</br>
-	stager/routes.go 
-	const (
-	StageRoute            = "Stage"
-	StopStagingRoute      = "StopStaging"
-	StagingCompletedRoute = "StagingCompleted"
-	)
 	
-	var Routes = rata.Routes{
-		{Path: "/v1/staging/:staging_guid", Method: "PUT", Name: StageRoute},
-		{Path: "/v1/staging/:staging_guid", Method: "DELETE", Name: StopStagingRoute},
-		{Path: "/v1/staging/:staging_guid/completed", Method: "POST", Name: StagingCompletedRoute},
-	}
+		stager/routes.go 
+		const (
+		StageRoute            = "Stage"
+		StopStagingRoute      = "StopStaging"
+		StagingCompletedRoute = "StagingCompleted"
+		)
+		
+		var Routes = rata.Routes{
+			{Path: "/v1/staging/:staging_guid", Method: "PUT", Name: StageRoute},
+			{Path: "/v1/staging/:staging_guid", Method: "DELETE", Name: StopStagingRoute},
+			{Path: "/v1/staging/:staging_guid/completed", Method: "POST", Name: StagingCompletedRoute},
+		}
 	
-	</br>
+将任务以动作的形式提交到后一层的<strong>Receptor</strong>组建执行，并将执行结果返回（注意这里做为一次短任务来执行编译）</br>
+后端分为buildpack_app_lifecycle和docker_app_lifecycle 这两步其实都是在拼接字符串，真正执行是交给Receptor来执行动作 </br>
 	
-	将任务以动作的形式提交到后一层的<strong>Receptor</strong>组建执行，并将执行结果返回（注意这里做为一次短任务来执行编译）</br>
-	后端分为buildpack_app_lifecycle和docker_app_lifecycle 这两步其实都是在拼接字符串，真正执行是交给Receptor来执行动作 </br>
+buildpack_app_lifecycle:将会触发一下动作
+1.Download app package
+2.Download builder（docker or buildpack）
+3.Download buildpacks
+4.Download buildpack artifacts cache
+5.Run Builder
+6.Upload Droplet
+7.Upload Buildpack Artifacts Cache
+		task := receptor.TaskCreateRequest{
+			TaskGuid:              stagingGuid,
+			Domain:                backend.config.TaskDomain,
+			RootFS:                models.PreloadedRootFS(lifecycleData.Stack),
+			ResultFile:            builderConfig.OutputMetadata(),
+			MemoryMB:              request.MemoryMB,
+			DiskMB:                request.DiskMB,
+			CPUWeight:             StagingTaskCpuWeight,
+			Action:                models.WrapAction(models.Timeout(models.Serial(actions...), timeout)),
+			LogGuid:               request.LogGuid,
+			LogSource:             TaskLogSource,
+			CompletionCallbackURL: backend.config.CallbackURL(stagingGuid),
+			EgressRules:           request.EgressRules,
+			Annotation:            string(annotationJson),
+			Privileged:            true,
+			EnvironmentVariables:  []*models.EnvironmentVariable{{"LANG", DefaultLANG}},
+		}
 	
-	buildpack_app_lifecycle:将会触发一下动作
-	1.Download app package
-	2.Download builder（docker or buildpack）
-	3.Download buildpacks
-	4.Download buildpack artifacts cache
-	5.Run Builder
-	6.Upload Droplet
-	7.Upload Buildpack Artifacts Cache
-	task := receptor.TaskCreateRequest{
-		TaskGuid:              stagingGuid,
-		Domain:                backend.config.TaskDomain,
-		RootFS:                models.PreloadedRootFS(lifecycleData.Stack),
-		ResultFile:            builderConfig.OutputMetadata(),
-		MemoryMB:              request.MemoryMB,
-		DiskMB:                request.DiskMB,
-		CPUWeight:             StagingTaskCpuWeight,
-		Action:                models.WrapAction(models.Timeout(models.Serial(actions...), timeout)),
-		LogGuid:               request.LogGuid,
-		LogSource:             TaskLogSource,
-		CompletionCallbackURL: backend.config.CallbackURL(stagingGuid),
-		EgressRules:           request.EgressRules,
-		Annotation:            string(annotationJson),
-		Privileged:            true,
-		EnvironmentVariables:  []*models.EnvironmentVariable{{"LANG", DefaultLANG}},
-	}
+docker_app_lifecycle:将会触发以下动作：</br>
+1.Download builder（将会检查docker image cache是否缓存）</br>
+registryServices, err := getDockerRegistryServices(backend.config.ConsulCluster, backend.logger)</br>
+会检查docker image是否已经注册到了Consul,如果没有则提交构建docker image的任务</br>
+registryRules := addDockerRegistryRules(request.EgressRules, registryServices)</br>
+docker register的地址</br>
+registryIPs := strings.Join(buildDockerRegistryAddresses(registryServices), ",")</br>
+构建注册docker的地址</br>
+runActionArguments, err = addDockerCachingArguments(runActionArguments, registryIPs, backend.config.InsecureDockerRegistry, host, port, lifecycleData)</br>
+所有的请求字段都构建完成，提交run action任务给Receptor</br>
+2.Run builder
+		task := receptor.TaskCreateRequest{
+			TaskGuid:              stagingGuid,
+			ResultFile:            DockerBuilderOutputPath,
+			Domain:                backend.config.TaskDomain,
+			RootFS:                models.PreloadedRootFS(backend.config.DockerStagingStack),
+			MemoryMB:              request.MemoryMB,
+			DiskMB:                request.DiskMB,
+			Action:                models.WrapAction(models.Timeout(models.Serial(actions...), dockerTimeout(request, backend.logger))),
+			CompletionCallbackURL: backend.config.CallbackURL(stagingGuid),
+			LogGuid:               request.LogGuid,
+			LogSource:             TaskLogSource,
+			Annotation:            string(annotationJson),
+			EgressRules:           request.EgressRules,
+			Privileged:            true,
+		}
 	
-	docker_app_lifecycle:将会触发以下动作：
-	1.Download builder（将会检查docker image cache是否缓存）
-	registryServices, err := getDockerRegistryServices(backend.config.ConsulCluster, backend.logger)
-	会检查docker image是否已经注册到了Consul,如果没有则提交构建docker image的任务
-	registryRules := addDockerRegistryRules(request.EgressRules, registryServices)
-	docker register的地址
-	registryIPs := strings.Join(buildDockerRegistryAddresses(registryServices), ",")
-	构建注册docker的地址
-	runActionArguments, err = addDockerCachingArguments(runActionArguments, registryIPs, backend.config.InsecureDockerRegistry, host, port, lifecycleData)
-	所有的请求字段都构建完成，提交run action任务给Receptor	
-	2.Run builder
-	task := receptor.TaskCreateRequest{
-		TaskGuid:              stagingGuid,
-		ResultFile:            DockerBuilderOutputPath,
-		Domain:                backend.config.TaskDomain,
-		RootFS:                models.PreloadedRootFS(backend.config.DockerStagingStack),
-		MemoryMB:              request.MemoryMB,
-		DiskMB:                request.DiskMB,
-		Action:                models.WrapAction(models.Timeout(models.Serial(actions...), dockerTimeout(request, backend.logger))),
-		CompletionCallbackURL: backend.config.CallbackURL(stagingGuid),
-		LogGuid:               request.LogGuid,
-		LogSource:             TaskLogSource,
-		Annotation:            string(annotationJson),
-		EgressRules:           request.EgressRules,
-		Privileged:            true,
-	}
-	
-	我们来看一下触发构建docker image到底注册了什么：（缓存了docker image的具体信息早diego_docker_cache里）
-	这一步其实是在想builder发出构建docker image 的命令
-	func addDockerCachingArguments(args []string, registryIPs string, insecureRegistry bool, host string, port string, stagingData cc_messages.DockerStagingData) ([]string, error) {
-	args = append(args, "-cacheDockerImage")
+我们来看一下触发构建docker image到底注册了什么：（缓存了docker image的具体信息早diego_docker_cache里）</br>
+这一步其实是在想builder发出构建docker image 的命令 </br>
 
-	args = append(args, "-dockerRegistryHost", host)
-	args = append(args, "-dockerRegistryPort", port)
+		func addDockerCachingArguments(args []string, registryIPs string, insecureRegistry bool, host string, port string, stagingData cc_messages.DockerStagingData) ([]string, error) {
+		args = append(args, "-cacheDockerImage")
 
-	args = append(args, "-dockerRegistryIPs", registryIPs)
-	if insecureRegistry {
-		args = append(args, "-insecureDockerRegistries", fmt.Sprintf("%s:%s", host, port))
-	}
+		args = append(args, "-dockerRegistryHost", host)
+		args = append(args, "-dockerRegistryPort", port)
 
-	if len(stagingData.DockerLoginServer) > 0 {
-		args = append(args, "-dockerLoginServer", stagingData.DockerLoginServer)
-	}
-	if len(stagingData.DockerUser) > 0 {
-		args = append(args, "-dockerUser", stagingData.DockerUser,
-			"-dockerPassword", stagingData.DockerPassword,
-			"-dockerEmail", stagingData.DockerEmail)
-	}
+		args = append(args, "-dockerRegistryIPs", registryIPs)
+		if insecureRegistry {
+			args = append(args, "-insecureDockerRegistries", fmt.Sprintf("%s:%s", host, port))
+		}
 
-	return args, nil
-}
+		if len(stagingData.DockerLoginServer) > 0 {
+			args = append(args, "-dockerLoginServer", stagingData.DockerLoginServer)
+		}
+		if len(stagingData.DockerUser) > 0 {
+			args = append(args, "-dockerUser", stagingData.DockerUser,
+				"-dockerPassword", stagingData.DockerPassword,
+				"-dockerEmail", stagingData.DockerEmail)
+		}
+
+		return args, nil
+		}
 	
 	
