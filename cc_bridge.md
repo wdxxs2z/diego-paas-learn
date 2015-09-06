@@ -257,7 +257,8 @@ https://github.com/cloudfoundry-incubator/nsync/blob/master/bulk/fetcher.go#L94<
 /bulk/processor.go</br>
 根据两种不同的builder，从<strong>Receptor</strong>受体中取到LRPs</br>
 existing, err := p.receptorClient.DesiredLRPsByDomain(cc_messages.AppLRPDomain)</br>
-然后将取到的LRP信息进行匹配比较 这个过程需要获取同步锁
+然后将取到的LRP信息进行匹配比较 这个过程需要获取同步锁</br>
+
 		existingLRPMap := organizeLRPsByProcessGuid(existing)
 		differ := NewDiffer(existingLRPMap)
 		cancel := make(chan struct{})
