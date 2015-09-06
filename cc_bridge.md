@@ -37,7 +37,7 @@ ip,被分配到了那个cells里等等</br>
 因为stager本身就是用来处理编译任务的，所以这里可以看到三个lifecycle,说明支持buildpack、docker、windows </br>
 
 ### 分析：</br>
-    stager负责处理cc端发来的编译请求</br>
+Stager负责处理cc端发来的编译请求
 	
 		stager/routes.go 
 		const (
@@ -53,16 +53,17 @@ ip,被分配到了那个cells里等等</br>
 		}
 	
 将任务以动作的形式提交到后一层的<strong>Receptor</strong>组建执行，并将执行结果返回（注意这里做为一次短任务来执行编译）</br>
-后端分为buildpack_app_lifecycle和docker_app_lifecycle 这两步其实都是在拼接字符串，真正执行是交给Receptor来执行动作 </br>
+后端分为<strong>buildpack_app_lifecycle</strong>和<strong>docker_app_lifecycle</strong>这两步其实都是在拼接字符串，真正执行是交给Receptor来执行动作 </br>
 	
-buildpack_app_lifecycle:将会触发一下动作
-1.Download app package
-2.Download builder（docker or buildpack）
-3.Download buildpacks
-4.Download buildpack artifacts cache
-5.Run Builder
-6.Upload Droplet
-7.Upload Buildpack Artifacts Cache
+buildpack_app_lifecycle:将会触发一下动作</br>
+1.Download app package</br>
+2.Download builder（docker or buildpack）</br>
+3.Download buildpacks</br>
+4.Download buildpack artifacts cache</br>
+5.Run Builder</br>
+6.Upload Droplet</br>
+7.Upload Buildpack Artifacts Cache</br>
+
 		task := receptor.TaskCreateRequest{
 			TaskGuid:              stagingGuid,
 			Domain:                backend.config.TaskDomain,
@@ -91,7 +92,8 @@ registryIPs := strings.Join(buildDockerRegistryAddresses(registryServices), ",")
 构建注册docker的地址</br>
 runActionArguments, err = addDockerCachingArguments(runActionArguments, registryIPs, backend.config.InsecureDockerRegistry, host, port, lifecycleData)</br>
 所有的请求字段都构建完成，提交run action任务给Receptor</br>
-2.Run builder
+2.Run builder</br>
+
 		task := receptor.TaskCreateRequest{
 			TaskGuid:              stagingGuid,
 			ResultFile:            DockerBuilderOutputPath,
@@ -133,5 +135,3 @@ runActionArguments, err = addDockerCachingArguments(runActionArguments, registry
 
 		return args, nil
 		}
-	
-	
