@@ -1,12 +1,12 @@
 # Cells 部分(初版)
 下面开始从Cells部分开始简要源码分析，如果后期发现问题，择后在改 <br />
 
-Cells不能从严格意义上说有几个组件，比较关键的有4个，加上扩展的5个
+Cells不能从严格意义上说有几个组件，比较关键的有4个
 -----------------------------------
 * rep bbs，auctions组件都要于它通信，同时优势executor的桥梁，进入garden的大门
-* garden 容器前端
-* executor 执行体
-* garden-linux-backend 容器后端
+* garden 容器前端，接收executor请求
+* executor 执行体(rep的后端)
+* garden-linux-backend 容器后端，构建容器
 * garden-windows(扩展)
 
 ### rep executor组件分析
