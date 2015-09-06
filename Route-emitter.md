@@ -190,6 +190,7 @@ startEventSource := func(){}跟进去看看里面的具体信息：<br />
 		)
 	
 我们来看一下desiredLRPs 的handler的日志，这里主要展现了一个app实例被扩展的情形 private_key太长被我砍掉了<br />
+
 		{
 		"timestamp": "1441088698.029039621", 
 		"source": "route-emitter", 
@@ -371,6 +372,7 @@ startEventSource := func(){}跟进去看看里面的具体信息：<br />
 直到看到route-emitter.watcher.handling-actual-update.complete 这个实例被完整的创建成功<br />
 	
 --->接下来进如到watcher部分，更新路由表<br />
+
 		{
 		"timestamp": "1441088716.608674765", 
 		"source": "route-emitter", 
