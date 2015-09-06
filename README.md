@@ -8,15 +8,15 @@ cloudfoundry 把第三代runtime的引擎命名为diego,虽然是一次被动的
 还是先上一个图：</br>
 ![Peter don't care](https://github.com/wdxxs2z/PictureStore/blob/master/diego/diego-overview.png) <br />
 
-可将其分为5层：
+可将其分为6层：
 * CC-Bridge层</br>
 * Route-emitter层</br>
-* access层</br>
+* Access层</br>
 * Brain层</br>
 * Database层</br>
 * Cells层</br>
 
+接下来，我将按照上述顺序进行学习。
+</br>
 
-
-
-
+2015年9月6日
