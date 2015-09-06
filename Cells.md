@@ -1370,7 +1370,7 @@ https://github.com/cloudfoundry-incubator/garden/blob/master/server/request_hand
 
 ---------------------------------------------------------------------------------------------------
 官方有两个涉及图：一个是容器创建过程，一个是gardenServer如何跟backed后端进程通信的</br>
-![github](http://github.com/wdxxs2z/PictureStore/diego/container creation.png "github")
+![Peter don't care](https://github.com/wdxxs2z/PictureStore/blob/master/diego/container%20creation.png)</br>
 
 容器构建其实和上一代的warden没有什么区别，区别在于**AcquirePoolResources**和**AcquireSystemResources**这两个方法</br>
 
