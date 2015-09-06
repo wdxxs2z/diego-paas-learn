@@ -9,9 +9,9 @@ cc_bridge一共有4个组件组成
 * fileServer 此组件其实存放的都是一些关于和编译打包相关的tar包，比如docker_app_lifecycle，windows_app_lifecycle，buildpack_app_lifecycle
 
 ### 分析这四个组件，先说明一下什么是tasks,什么是LRPs
-Tasks: 指一次短任务，可以说是一个执行历程，比如我们在push一个应用的时候，会有下载appFiles，下载lifecycle,执行lifecycle编译命令，打包droplets,上传droplet等一系列短生命周期的
+* Tasks: 指一次短任务，可以说是一个执行历程，比如我们在push一个应用的时候，会有下载appFiles，下载lifecycle,执行lifecycle编译命令，打包droplets,上传droplet等一系列短生命周期的
 任务，这里我们可以统称他们为tasks </br>
-LRPs： 指运行的实例，在经过一些列的tasks后，如果成功，diego会按照先前应用所制定的运行清单,长期的运行某个APP，这里LRPs又分为DesiredLRPs和ActualLRPs，DesiredLRP是指应用
+* LRPs： 指运行的实例，在经过一些列的tasks后，如果成功，diego会按照先前应用所制定的运行清单,长期的运行某个APP，这里LRPs又分为DesiredLRPs和ActualLRPs，DesiredLRP是指应用
 的执行清单，比如会指定rootfs,ports,安全组,资源限制,根文件系统,需要的实例个数等等 ; 而acutalLRPs是指运行的实例，比如一个应用中的一个运行实例再被创建时,它所对应的容器
 ip,被分配到了那个cells里等等</br>
 
@@ -171,10 +171,8 @@ https://github.com/cloudfoundry-incubator/docker_app_lifecycle/blob/master/launc
 			if err == nil {
 				os.Setenv("VCAP_APPLICATION", string(mungedAppEnv))
 			}
-		}
-		
+		}	
 </br>
-
 如果DockerFile中有启动命令就将其按照dockerfile里定义的entrypoint里的命令来启动</br>
 
 		if startCommand != "" {
@@ -197,3 +195,165 @@ https://github.com/cloudfoundry-incubator/docker_app_lifecycle/blob/master/launc
 			syscall.Exec(argv[0], argv, os.Environ())
 		}
 
+### Nsync组件分析
+先看它的启动参数：</br>
+
+		/var/vcap/packages/nsync/bin/nsync-bulker \
+		-diegoAPIURL=http://:@receptor.service.cf.internal:8887 \
+		-consulCluster=http://127.0.0.1:8500 \
+		-ccBaseURL=https://api.10.244.0.34.xip.io \
+		-ccUsername=internal_user \
+		-ccPassword=internal-password \
+		-communicationTimeout=30s \
+		-debugAddr=0.0.0.0:17007 \
+		-pollingInterval=30s \
+		-bulkBatchSize=500 \
+		-skipCertVerify=true \
+		-lifecycle buildpack/cflinuxfs2:buildpack_app_lifecycle/buildpack_app_lifecycle.tgz -lifecycle buildpack/windows2012R2:windows_app_lifecycle/windows_app_lifecycle.tgz -lifecycle docker:docker_app_lifecycle/docker_app_lifecycle.tgz \
+		-fileServerURL=http://file-server.service.cf.internal:8080 \
+		-logLevel=debug
+	  
+		/var/vcap/packages/nsync/bin/nsync-listener \
+		-diegoAPIURL=http://:@receptor.service.cf.internal:8887 \
+		-nsyncURL=http://nsync.service.cf.internal:8787 \
+		-debugAddr=0.0.0.0:17006 \
+		-lifecycle buildpack/cflinuxfs2:buildpack_app_lifecycle/buildpack_app_lifecycle.tgz -lifecycle buildpack/windows2012R2:windows_app_lifecycle/windows_app_lifecycle.tgz -lifecycle docker:docker_app_lifecycle/docker_app_lifecycle.tgz \
+		-fileServerURL=http://file-server.service.cf.internal:8080 \
+		-logLevel=debug
+		
+### 分析：</br>
+NSYNC主要处理LRP任务，保证DesiredLRPs的清单和现有的process app一致，还有一个就是定期的于CC通信，已确保这些应用在diego里都是新的。</br>
+	
+		const (
+		DesireAppRoute = "Desire"
+		StopAppRoute   = "StopApp"
+		KillIndexRoute = "KillIndex"
+		)
+
+		var Routes = rata.Routes{
+			{Path: "/v1/apps/:process_guid", Method: "PUT", Name: DesireAppRoute},
+			{Path: "/v1/apps/:process_guid", Method: "DELETE", Name: StopAppRoute},
+			{Path: "/v1/apps/:process_guid/index/:index", Method: "DELETE", Name: KillIndexRoute},
+		}
+	
+先看nsync-bulker部分：</br>
+进入主函数/cmd/nsync-bulker/main.go </br>
+接受两种builder <strong>Buildpack</strong>和<strong>Docker</strong> </br>
+
+		recipeBuilderConfig := recipebuilder.Config{
+			Lifecycles:    lifecycles,
+			FileServerURL: *fileServerURL,
+			KeyFactory:    keys.RSAKeyPairFactory,
+		}
+		recipeBuilders := map[string]recipebuilder.RecipeBuilder{
+			"buildpack": recipebuilder.NewBuildpackRecipeBuilder(logger, recipeBuilderConfig),
+			"docker":    recipebuilder.NewDockerRecipeBuilder(logger, recipeBuilderConfig),
+		}
+		
+来到/bulk/fetcher.go</br>
+主要是调用CC的文件指纹校对接口，然后获取DesiredApps的指纹进行新旧或者是否丢失的比对</br>
+https://github.com/cloudfoundry-incubator/nsync/blob/master/bulk/fetcher.go#L94</br>
+具体就是开启goroutine批量的获取并进行比对。</br>
+/bulk/processor.go</br>
+根据两种不同的builder，从<strong>Receptor</strong>受体中取到LRPs</br>
+existing, err := p.receptorClient.DesiredLRPsByDomain(cc_messages.AppLRPDomain)</br>
+然后将取到的LRP信息进行匹配比较 这个过程需要获取同步锁
+		existingLRPMap := organizeLRPsByProcessGuid(existing)
+		differ := NewDiffer(existingLRPMap)
+		cancel := make(chan struct{})
+		fingerprints, fingerprintErrors := p.fetcher.FetchFingerprints(
+			logger,
+			cancel,
+			httpClient,
+		)//指纹比对
+		missingApps, missingAppsErrors := p.fetcher.FetchDesiredApps(
+			logger.Session("fetch-missing-desired-lrps-from-cc"),
+			cancel,
+			httpClient,
+			differ.Missing(),
+		)//是否丢失
+		staleApps, staleAppErrors := p.fetcher.FetchDesiredApps(
+			logger.Session("fetch-stale-desired-lrps-from-cc"),
+			cancel,
+			httpClient,
+			differ.Stale(),
+		)//是否过旧
+		
+然后通过process_loop:进行状态统计和更新</br>
+如果是丢失：则创建一个关于丢失的desireAppRequests</br>
+https://github.com/cloudfoundry-incubator/nsync/blob/master/bulk/processor.go#L233</br>
+
+		//判断两种builder类型
+		var builder recipebuilder.RecipeBuilder = p.builders["buildpack"]
+			if desireAppRequest.DockerImageUrl != "" {
+				builder = p.builders["docker"]
+			}
+		......
+		createReq, err := builder.Build(&desireAppRequest)
+		err = p.receptorClient.CreateDesiredLRP(*createReq)
+		
+		如果是过时的：则创建一个过时的staleAppRequests 
+		https://github.com/cloudfoundry-incubator/nsync/blob/master/bulk/processor.go#L276
+		processGuid := desireAppRequest.ProcessGuid
+		existingLRP := existingLRPMap[desireAppRequest.ProcessGuid]
+
+		updateReq := receptor.DesiredLRPUpdateRequest{}
+		updateReq.Instances = &desireAppRequest.NumInstances
+		updateReq.Annotation = &desireAppRequest.ETag
+
+		exposedPort, err := builder.ExtractExposedPort(desireAppRequest.ExecutionMetadata)
+		//更新路由表信息
+		updateReq.Routes = cfroutes.CFRoutes{
+			{Hostnames: desireAppRequest.Routes, Port: exposedPort},
+		}.RoutingInfo()
+
+		for k, v := range existingLRP.Routes {
+			if k != cfroutes.CF_ROUTER {
+				updateReq.Routes[k] = v
+			}
+		}
+		err = p.receptorClient.UpdateDesiredLRP(processGuid, updateReq)
+	
+其它比较有意思的地方：/recipebuilder/docker_execution_metadata.go </br>
+
+		//描绘了docker builder的原信息,其实就是DOCKERFILE
+		type DockerExecutionMetadata struct {
+		Cmd          []string `json:"cmd,omitempty"`
+		Entrypoint   []string `json:"entrypoint,omitempty"`
+		Workdir      string   `json:"workdir,omitempty"`
+		ExposedPorts []Port   `json:"ports,omitempty"`
+		User         string   `json:"user,omitempty"`
+		}
+
+		type Port struct {
+			Port     uint16
+			Protocol string
+		}
+	
+这里的user可以指定，如果不指定则用root启动容器内的应用</br>
+
+		/recipebuilder/docker_recipe_builder.go
+		func extractUser(executionMetadata DockerExecutionMetadata) (string, error) {
+			if len(executionMetadata.User) > 0 {
+				return executionMetadata.User, nil
+			} else {
+				return "root", nil
+			}
+		}
+		https://github.com/cloudfoundry-incubator/nsync/blob/master/recipebuilder/docker_recipe_builder.go#L288</br>
+
+这里有个函数是专门处理docker register的，其实就是重写了docker官方的注册方法</br>
+
+		func convertDockerURI(dockerURI string) (string, error) {
+			if strings.Contains(dockerURI, "://") {
+				return "", errors.New("docker URI [" + dockerURI + "] should not contain scheme")
+			}
+
+			indexName, remoteName, tag := parseDockerRepoUrl(dockerURI)
+
+			return (&url.URL{
+				Scheme:   DockerScheme,
+				Path:     indexName + "/" + remoteName,
+				Fragment: tag,
+			}).String(), nil
+		}
