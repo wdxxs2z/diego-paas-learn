@@ -358,3 +358,155 @@ https://github.com/cloudfoundry-incubator/nsync/blob/master/bulk/processor.go#L2
 				Fragment: tag,
 			}).String(), nil
 		}
+		
+### Tps组件分析
+这个组件是用来直接和CC通信同时获取当前正在运行的LRPs的状态,也就是ActualLRPs</br>
+先看它的启动参数：</br>
+
+		const (
+		LRPStatus     = "LRPStatus"
+		LRPStats      = "LRPStats"
+		BulkLRPStatus = "BulkLRPStatus"
+		)
+
+		var Routes = rata.Routes{
+			{Path: "/v1/bulk_actual_lrp_status", Method: "GET", Name: BulkLRPStatus},
+			{Path: "/v1/actual_lrps/:guid", Method: "GET", Name: LRPStatus},
+			{Path: "/v1/actual_lrps/:guid/stats", Method: "GET", Name: LRPStats},
+		}
+	
+分两部分<strong>tps-watcher</strong>，<string>tps-listener</strong></br>
+watcher主要是从<strong>Receptor</strong>用来接收事件：</br>
+es, err = watcher.receptorClient.SubscribeToEvents()</br>
+然后用func (watcher *Watcher) handleEvent(logger lager.Logger, event receptor.Event)来处理事件</br>
+这里主要是针对crash，stoping的就不说了</br>
+
+		//比对和统计前crash的数目
+		if changed.After.CrashCount > changed.Before.CrashCount
+		//获取crash的processId
+		guid := changed.After.ProcessGuid
+		//发消息给cc，告诉CC，有实例挂了
+		appCrashed := cc_messages.AppCrashedRequest{
+			Instance:        changed.Before.InstanceGuid,
+			Index:           changed.After.Index,
+			Reason:          "CRASHED",
+			ExitDescription: changed.After.CrashReason,
+			CrashCount:      changed.After.CrashCount,
+			CrashTimestamp:  changed.After.Since,
+		}
+
+		watcher.pool.Submit(func() {
+			err := watcher.ccClient.AppCrashed(guid, appCrashed, logger)
+			if err != nil {
+				logger.Info("failed-app-crashed", lager.Data{
+					"process-guid": guid,
+					"index":        changed.After.Index,
+					"error":        err,
+				})
+			}
+		})
+  
+--->至于这个ccClient可以看到：https://github.com/cloudfoundry-incubator/tps/blob/master/cc_client/cc_client.go#L67 </br>
+
+		/internal/apps/%s/crashed %s是具体的app
+   
+现在来看这个<strong>listener</strong>:</br>
+直接进到/handler/handler.go 三种handler</br>
+
+		func New(apiClient receptor.Client, noaaClient lrpstats.NoaaClient, maxInFlight int, logger lager.Logger) (http.Handler, error) {
+			semaphore := make(chan struct{}, maxInFlight)
+			clock := clock.NewClock()
+
+			handlers := map[string]http.Handler{
+				tps.LRPStatus: tpsHandler{
+					semaphore:       semaphore,
+					delegateHandler: LogWrap(lrpstatus.NewHandler(apiClient, clock, logger), logger),
+				},
+				tps.LRPStats: tpsHandler{
+					semaphore:       semaphore,
+					delegateHandler: LogWrap(lrpstats.NewHandler(apiClient, noaaClient, clock, logger), logger),
+				},
+				tps.BulkLRPStatus: tpsHandler{
+					semaphore:       semaphore,
+					delegateHandler: bulklrpstatus.NewHandler(apiClient, clock, logger),
+				},
+			}
+
+			return rata.NewRouter(tps.Routes, handlers)
+		}
+
+--->然后去看看lrpstats.NoaaClient /handler/lrpstats/lrpstats.go</br>
+
+		//获取desiredLRP
+		desiredLRP, err := handler.receptorClient.GetDesiredLRP(guid)
+		//获取actualLRPs
+		actualLRPs, err := handler.receptorClient.ActualLRPsByProcessGuid(guid)
+		//获取metrics
+		metrics, err := handler.noaaClient.ContainerMetrics(desiredLRP.LogGuid, authorization)
+		继续跟进去，看到LRP实例的状态信息 CPU MEM TIME DISK
+		metricsByInstanceIndex := make(map[uint]*cc_messages.LRPInstanceStats)
+		currentTime := handler.clock.Now()
+		for _, metric := range metrics {
+			cpuPercentageAsDecimal := metric.GetCpuPercentage() / 100
+			metricsByInstanceIndex[uint(metric.GetInstanceIndex())] = &cc_messages.LRPInstanceStats{
+				Time:          currentTime,
+				CpuPercentage: cpuPercentageAsDecimal,
+				MemoryBytes:   metric.GetMemoryBytes(),
+				DiskBytes:     metric.GetDiskBytes(),
+			}
+		}
+
+		instances := lrpstatus.LRPInstances(actualLRPs,
+			func(instance *cc_messages.LRPInstance, actual *receptor.ActualLRPResponse) {
+				instance.Host = actual.Address
+				instance.Port = getDefaultPort(actual.Ports)
+				stats := metricsByInstanceIndex[uint(actual.Index)]
+				instance.Stats = stats
+			},
+			handler.clock,
+		)
+	
+--->继续跟到lrpstatus.LRPInstances里/handler/lrpstatus/lrpstatus.go</br>
+
+		func LRPInstances(
+		actualLRPs []receptor.ActualLRPResponse,
+		addInfo func(*cc_messages.LRPInstance, *receptor.ActualLRPResponse),
+		clk clock.Clock,
+		) []cc_messages.LRPInstance {
+			instances := make([]cc_messages.LRPInstance, len(actualLRPs))
+			//遍历actualLrps,看到这个应该知道它是正在运行的实例，主要是获取正在运行的实例信息
+			for i, actual := range actualLRPs {
+				instance := cc_messages.LRPInstance{
+					ProcessGuid:  actual.ProcessGuid,
+					InstanceGuid: actual.InstanceGuid,
+					Index:        uint(actual.Index),
+					Since:        actual.Since / 1e9,
+					Uptime:       (clk.Now().UnixNano() - actual.Since) / 1e9,
+					State:        cc_conv.StateFor(actual.State),
+				}
+				if addInfo != nil {
+					addInfo(&instance, &actual)
+				}
+			instances[i] = instance
+			}
+		return instances
+		}
+		
+--->这里有个State:cc_conv.StateFor(actual.State)，继续/handler/cc_conv/cc_conv.go</br>
+
+		func StateFor(state receptor.ActualLRPState) cc_messages.LRPInstanceState {
+			switch state {
+			case receptor.ActualLRPStateUnclaimed:
+				return cc_messages.LRPInstanceStateStarting
+			case receptor.ActualLRPStateClaimed:
+				return cc_messages.LRPInstanceStateStarting
+			case receptor.ActualLRPStateRunning:
+				return cc_messages.LRPInstanceStateRunning
+			case receptor.ActualLRPStateCrashed:
+				return cc_messages.LRPInstanceStateCrashed
+			default:
+				return cc_messages.LRPInstanceStateUnknown
+			}
+		}
+		
+返回了六种状态 这六种状态可以到cloudfoundry-incubator/runtime-schema/cc_messages/lrp_instance.go 看到
