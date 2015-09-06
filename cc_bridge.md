@@ -110,8 +110,8 @@ runActionArguments, err = addDockerCachingArguments(runActionArguments, registry
 			Privileged:            true,
 		}
 	
-我们来看一下触发构建docker image到底注册了什么：（缓存了docker image的具体信息早diego_docker_cache里）</br>
-这一步其实是在想builder发出构建docker image 的命令 </br>
+我们来看一下触发构建docker参数，到底注册了什么：如果熟悉docker的童鞋一眼就能看出，这个貌似是启动docker deamon的参数：</br>
+这一步其实是在向builder发出启动docker并构建docker image 的命令 </br>
 
 		func addDockerCachingArguments(args []string, registryIPs string, insecureRegistry bool, host string, port string, stagingData cc_messages.DockerStagingData) ([]string, error) {
 		args = append(args, "-cacheDockerImage")
@@ -135,3 +135,61 @@ runActionArguments, err = addDockerCachingArguments(runActionArguments, registry
 
 		return args, nil
 		}
+		
+### 为了不让自己偷懒，到docker_app_lifecycle里去一看究竟
+https://github.com/cloudfoundry-incubator/docker_app_lifecycle </br>
+
+1.首先检查docker是否已经启动</br>
+err := waitForDocker(signals, builder.DockerDaemonTimeout)
+</br>
+2.如果/var/run/docker.sock正常，则运行build,这时候就会去fetch image，最终将整个镜像保存起来</br>
+img, err := helpers.FetchMetadata(builder.RepoName, builder.Tag, builder.InsecureDockerRegistries, authConfig)</br>
+这里面的整个操作都是在后端garden-linux里执行的，后面会分析</br>
+https://github.com/cloudfoundry-incubator/docker_app_lifecycle/blob/master/helpers/helpers.go#L49
+</br>
+3.当镜像完全下载完成后，就可以使用luncher来把这个镜像run起来</br>
+https://github.com/cloudfoundry-incubator/docker_app_lifecycle/blob/master/launcher/main.go#L20</br>
+设置环境变量：</br>
+		err := json.Unmarshal([]byte(os.Getenv("VCAP_APPLICATION")), &vcapAppEnv)
+		if err == nil {
+			vcapAppEnv["host"] = "0.0.0.0"
+
+			vcapAppEnv["instance_id"] = os.Getenv("INSTANCE_GUID")
+
+			port, err := strconv.Atoi(os.Getenv("PORT"))
+			if err == nil {
+				vcapAppEnv["port"] = port
+			}
+
+			index, err := strconv.Atoi(os.Getenv("INSTANCE_INDEX"))
+			if err == nil {
+				vcapAppEnv["instance_index"] = index
+			}
+
+			mungedAppEnv, err := json.Marshal(vcapAppEnv)
+			if err == nil {
+				os.Setenv("VCAP_APPLICATION", string(mungedAppEnv))
+			}
+		}
+</br>
+如果DockerFile中有启动命令就将其按照dockerfile里定义的entrypoint里的命令来启动</br>
+		if startCommand != "" {
+			syscall.Exec("/bin/sh", []string{
+				"/bin/sh",
+				"-c",
+				startCommand,
+			}, os.Environ())
+		} else {
+			if len(executionMetadata.Entrypoint) == 0 && len(executionMetadata.Cmd) == 0 {
+				fmt.Fprintf(os.Stderr, "No start command found or specified")
+				os.Exit(1)
+			}
+
+			// https://docs.docker.com/reference/builder/#entrypoint and
+			// https://docs.docker.com/reference/builder/#cmd dictate how Entrypoint
+			// and Cmd are treated by docker; we follow these rules here
+			argv := executionMetadata.Entrypoint
+			argv = append(argv, executionMetadata.Cmd...)
+			syscall.Exec(argv[0], argv, os.Environ())
+		}
+
