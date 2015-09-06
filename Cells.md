@@ -1,16 +1,16 @@
-# Cells ²¿·Ö(³õ°æ)
-ÏÂÃæ¿ªÊ¼´ÓCells²¿·Ö¿ªÊ¼¼òÒªÔ´Âë·ÖÎö£¬Èç¹ûºóÆÚ·¢ÏÖÎÊÌâ£¬ÔñºóÔÚ¸Ä <br />
+# Cells éƒ¨åˆ†(åˆç‰ˆ)
+ä¸‹é¢å¼€å§‹ä»Cellséƒ¨åˆ†å¼€å§‹ç®€è¦æºç åˆ†æï¼Œå¦‚æœåæœŸå‘ç°é—®é¢˜ï¼Œæ‹©ååœ¨æ”¹ <br />
 
-Cells²»ÄÜ´ÓÑÏ¸ñÒâÒåÉÏËµÓĞ¼¸¸ö×é¼ş£¬±È½Ï¹Ø¼üµÄÓĞ4¸ö
+Cellsä¸èƒ½ä»ä¸¥æ ¼æ„ä¹‰ä¸Šè¯´æœ‰å‡ ä¸ªç»„ä»¶ï¼Œæ¯”è¾ƒå…³é”®çš„æœ‰4ä¸ª
 -----------------------------------
-* rep bbs£¬auctions×é¼ş¶¼ÒªÓÚËüÍ¨ĞÅ£¬Í¬Ê±ÓÅÊÆexecutorµÄÇÅÁº£¬½øÈëgardenµÄ´óÃÅ
-* garden ÈİÆ÷Ç°¶Ë£¬½ÓÊÕexecutorÇëÇó
-* executor Ö´ĞĞÌå(repµÄºó¶Ë)
-* garden-linux-backend ÈİÆ÷ºó¶Ë£¬¹¹½¨ÈİÆ÷
-* garden-windows(À©Õ¹)
+* rep BBSç»„ä»¶å’ŒAuctionsç»„ä»¶éƒ½è¦äºå®ƒé€šä¿¡ï¼ŒåŒæ—¶åˆæ˜¯executorçš„æ¡¥æ¢ï¼Œè¿›å…¥gardençš„å¤§é—¨
+* garden è¿›å…¥å®¹å™¨çš„å‰ç«¯ï¼Œå¤„ç†executorçš„è¯·æ±‚ï¼Œé€šçŸ¥åç«¯å»ºç«‹å®¹å™¨
+* executor æ‰§è¡Œä½“(repçš„åç«¯)
+* garden-linux-backend å®¹å™¨åç«¯ï¼Œæ„å»ºå®¹å™¨
+* garden-windows(æ‰©å±•)
 
-### rep executor×é¼ş·ÖÎö
-ÏÈ¿´ËüµÄÆô¶¯²ÎÊı£º
+### rep executorç»„ä»¶åˆ†æ
+å…ˆçœ‹å®ƒçš„å¯åŠ¨å‚æ•°ï¼š
 
 		/var/vcap/packages/rep/bin/rep ${etcd_sec_flags} \
 		-etcdCluster="https://etcd.service.cf.internal:4001" \
@@ -46,31 +46,32 @@ Cells²»ÄÜ´ÓÑÏ¸ñÒâÒåÉÏËµÓĞ¼¸¸ö×é¼ş£¬±È½Ï¹Ø¼üµÄÓĞ4¸ö
 		-tempDir=$TMP_DIR \
 		-logLevel=debug
 		
-* rep£º
-×öÎª½øÈëcellsµÄ´óÃÅ£¬rep×é¼şÆğÁËºÜ¹Ø¼üµÄ×÷ÓÃ£º</br>
-1.Ê×ÏÈËü´ú±ícellµ÷½âËùÓĞÀ´×ÔBBS×é¼şµÄÍ¨ĞÅ£¬Ö÷ÒªÊÇÈ·±£BBS×é¼şÖĞTasksºÍactuallLrpsÔÚÈİÆ÷ÖĞµÄÍ¬²½£¬È»ºóÊÇÈİÔÖ£¬Õâ¸öÔÚConverger×é¼şÖĞÒÑ¾­·ÖÎöµ½ÁË£¬Ö÷ÒªÊÇÈİÔÖÊµÀıÇ¨ÒÆ</br>
-2.²ÎÓëauctionsµÄTasksºÍLRPsµÄÇëÇó</br>
-3.ÄÚ²¿»áÑ¯ÎÊExecutor×é¼ş£¬Í¨¹ıÕâ¸ö×é¼ş£¬tasksºÍlrps²ÅÄÜ¹»ÕæÕıµÄ´´½¨ÈİÆ÷²¢ÔÚÈİÆ÷ÖĞÔËĞĞÈÎÎñ»ò½ø³Ì</br>
+* repï¼š
+åšä¸ºè¿›å…¥cellsçš„å¤§é—¨ï¼Œrepç»„ä»¶èµ·äº†å¾ˆå…³é”®çš„ä½œç”¨:</br>
 
-* Executor£º
-Ëü±¾ÉíÊÇÒ»¸öÈİÆ÷´´½¨ºÍÖ´ĞĞµÄÊµÏÖ£¬Ëü²»»áÇø·ÖTasksºÍLRPs£¬Õâ¸ö×é¼ş»á½«cellÖĞµÄÈÕÖ¾×ª³öÀ´</br>
+1.é¦–å…ˆå®ƒä»£è¡¨cellè°ƒè§£æ‰€æœ‰æ¥è‡ªBBSç»„ä»¶çš„æ¶ˆæ¯äº‹ä»¶ï¼Œä¸»è¦æ˜¯ç¡®ä¿BBSç»„ä»¶ä¸­Taskså’ŒactuallLrpsåœ¨å®¹å™¨ä¸­çš„åŒæ­¥ï¼Œç„¶åæ˜¯å®¹ç¾ï¼Œè¿™ä¸ªåœ¨Convergerç»„ä»¶ä¸­å·²ç»åˆ†æåˆ°äº†ï¼Œä¸»è¦æ˜¯å®¹ç¾å®ä¾‹è¿ç§»</br>
+2.å‚ä¸auctionsçš„Taskså’ŒLRPsçš„è¯·æ±‚</br>
+3.å†…éƒ¨ä¼šè¯¢é—®Executorç»„ä»¶ï¼Œé€šè¿‡è¿™ä¸ªç»„ä»¶ï¼Œtaskså’Œlrpsæ‰èƒ½å¤ŸçœŸæ­£çš„åˆ›å»ºå®¹å™¨å¹¶åœ¨å®¹å™¨ä¸­è¿è¡Œä»»åŠ¡æˆ–è¿›ç¨‹</br>
 
-ÖØµãÏÈ¿´Ò»ÏÂrep:Õâ¸ö×é¼şÓĞÒ»´ó¶Ñ²ÎÊı Ò²ÊÇºóÆÚĞèÒª¸ù¾İÊµ¼ÊÓ¦ÓÃ»·¾³½øĞĞµ÷ÓÅ×î¶àµØ·½µÄ×é¼ş£¬Õâ¸öÊÇºÍÈİÆ÷±È½ÏÏà¹ØµÄÅäÖÃ</br>
+* Executorï¼š
+å®ƒæœ¬èº«æ˜¯ä¸€ä¸ªå®¹å™¨åˆ›å»ºå’Œæ‰§è¡Œçš„å®ç°ï¼Œå®ƒä¸ä¼šåŒºåˆ†Taskså’ŒLRPsï¼Œç”¨å®˜æ–¹çš„è¯è¯´æ˜¯Let me run that for you</br>
+
+é‡ç‚¹å…ˆçœ‹ä¸€ä¸‹rep:è¿™ä¸ªç»„ä»¶æœ‰ä¸€å¤§å †å‚æ•° ä¹Ÿæ˜¯åæœŸéœ€è¦æ ¹æ®å®é™…åº”ç”¨ç¯å¢ƒè¿›è¡Œè°ƒä¼˜æœ€å¤šåœ°æ–¹çš„ç»„ä»¶ï¼Œè¿™ä¸ªæ˜¯å’Œå®¹å™¨æ¯”è¾ƒç›¸å…³çš„é…ç½®</br>
 https://github.com/cloudfoundry-incubator/rep/blob/6676dde8901ba3c483602e48ff8f88058f285f76/cmd/rep/executor.go</br>
 
 		func executorConfig() executorinit.Configuration {
 			return executorinit.Configuration{
 				GardenNetwork:               *gardenNetwork, //tcp
-				GardenAddr:                  *gardenAddr,//garden¶ËµÄµØÖ· 127.0.0.1:7777
-				ContainerOwnerName:          *containerOwnerName,//ÈİÆ÷µÄÓµÓĞÕß
+				GardenAddr:                  *gardenAddr,//gardenç«¯çš„åœ°å€ 127.0.0.1:7777
+				ContainerOwnerName:          *containerOwnerName,//å®¹å™¨çš„æ‹¥æœ‰è€…
 				TempDir:                     *tempDir,
 				CachePath:                   *cachePath,
 				MaxCacheSizeInBytes:         *maxCacheSizeInBytes,//10000000000
 				SkipCertVerify:              *skipCertVerify, //true
-				ExportNetworkEnvVars:        *exportNetworkEnvVars, //ÊÇ·ñĞèÒªÍøÂç»·¾³±äÁ¿ true
+				ExportNetworkEnvVars:        *exportNetworkEnvVars, //æ˜¯å¦éœ€è¦ç½‘ç»œç¯å¢ƒå˜é‡ true
 				ContainerMaxCpuShares:       *containerMaxCpuShares, //1024
-				ContainerInodeLimit:         *containerInodeLimit, //inodeµÄÊıÄ¿200000
-				HealthyMonitoringInterval:   *healthyMonitoringInterval, //½¡¿µ¼ì²é30s
+				ContainerInodeLimit:         *containerInodeLimit, //inodeçš„æ•°ç›®200000
+				HealthyMonitoringInterval:   *healthyMonitoringInterval, //å¥åº·æ£€æŸ¥30s
 				UnhealthyMonitoringInterval: *unhealthyMonitoringInterval,
 				HealthCheckWorkPoolSize:     *healthCheckWorkPoolSize,
 				CreateWorkPoolSize:          *createWorkPoolSize,
@@ -78,16 +79,16 @@ https://github.com/cloudfoundry-incubator/rep/blob/6676dde8901ba3c483602e48ff8f8
 				ReadWorkPoolSize:            *readWorkPoolSize,
 				MetricsWorkPoolSize:         *metricsWorkPoolSize,
 				RegistryPruningInterval:     *registryPruningInterval,
-				MemoryMB:                    *memoryMBFlag, //Ê£ÏÂÁ½¸ö²ÎÊı¶¼ÊÇauto
+				MemoryMB:                    *memoryMBFlag, //å‰©ä¸‹ä¸¤ä¸ªå‚æ•°éƒ½æ˜¯auto
 				DiskMB:                      *diskMBFlag,
 			}
 		}
 
-ÏÂÃæµÄÕâ¸öÊÇrep×é¼ş±¾ÉíµÄÒ»Ğ©ÅäÖÃ
+ä¸‹é¢çš„è¿™ä¸ªæ˜¯repç»„ä»¶æœ¬èº«çš„ä¸€äº›é…ç½®
 https://github.com/cloudfoundry-incubator/rep/blob/6676dde8901ba3c483602e48ff8f88058f285f76/cmd/rep/main.go</br>
 
-ÔÚÃ»½øÈëÈİÆ÷´úÂëÖ®Ç°£¬ÎÒÃÇÖ®Ç°·ÖÎö¹ı£¬Ã¿¸ötasksºÍLRPs¶¼ÓĞÏàÓ¦µÄauctionÑ¡ÔñcellsÀ´Ö´ĞĞ</br>
-½øÈëµ½auction_cell_rep²¿·Ö£º</br>
+åœ¨æ²¡è¿›å…¥å®¹å™¨ä»£ç ä¹‹å‰ï¼Œæˆ‘ä»¬ä¹‹å‰åˆ†æè¿‡ï¼Œæ¯ä¸ªtaskså’ŒLRPséƒ½æœ‰ç›¸åº”çš„auctioné€‰æ‹©cellsæ¥æ‰§è¡Œ</br>
+è¿›å…¥åˆ°auction_cell_repéƒ¨åˆ†ï¼š</br>
 
 		type AuctionCellRep struct {
 			cellID               string
@@ -102,7 +103,7 @@ https://github.com/cloudfoundry-incubator/rep/blob/6676dde8901ba3c483602e48ff8f8
 			logger               lager.Logger
 		}
 		
-ÀïÃæÓĞcellID£¬stack£¬rootFSproviders£¬zone»¹ÓĞÒ»Ğ©ĞèÒªÓÃµÄ¿Í»§¶Ë±ÈÈçbbs£¬executor.Client</br>
+é‡Œé¢æœ‰cellIDï¼Œstackï¼ŒrootFSprovidersï¼Œzoneè¿˜æœ‰ä¸€äº›éœ€è¦ç”¨çš„å®¢æˆ·ç«¯æ¯”å¦‚bbsï¼Œexecutor.Client</br>
 
 		func rootFSProviders(preloaded rep.StackPathMap, arbitrary []string) auctiontypes.RootFSProviders {
 			rootFSProviders := auctiontypes.RootFSProviders{}
@@ -119,27 +120,28 @@ https://github.com/cloudfoundry-incubator/rep/blob/6676dde8901ba3c483602e48ff8f8
 			return rootFSProviders
 		}
 
-ÕâÒ»¿éÆäÊµ¾ÍÊÇÒÑ¾­ÅäÖÃºÃµÄ£º</br>
+è¿™ä¸€å—å…¶å®å°±æ˜¯å·²ç»é…ç½®å¥½çš„ï¼š</br>
 
 		-preloadedRootFS cflinuxfs2:/var/vcap/packages/rootfs_cflinuxfs2/rootfs
 		-rootFSProvider docker
 
-Ö´ĞĞÒ»ÏÂcf stacks£º</br>
+æ‰§è¡Œä¸€ä¸‹cf stacksï¼š</br>
 
 		cflinuxfs2      Cloud Foundry Linux-based filesystem   
 		windows2012R2   Windows Server 2012 R2
 		
-ÕâĞ©¶¼ÊÇpreloadedRootFS¾ÍÊÇÔ¤ÏÈÔÚ²¿ÊğµÄÊ±ºòÔ¤×°µÄrootfs</br>
+è¿™äº›éƒ½æ˜¯preloadedRootFSå°±æ˜¯é¢„å…ˆåœ¨éƒ¨ç½²çš„æ—¶å€™é¢„è£…çš„rootfs</br>
 
---->È»ºó½øÈëfunc (a *AuctionCellRep) Perform(work auctiontypes.Work) (auctiontypes.Work, error) ·½·¨</br>
-* ÏÈ¿´LRPs²¿·Ö£º</br>
+--->ç„¶åè¿›å…¥func (a *AuctionCellRep) Perform(work auctiontypes.Work) (auctiontypes.Work, error) æ–¹æ³•</br>
+https://github.com/cloudfoundry-incubator/rep/blob/f0ef73a6898b72f9c031de6fa478795502b58425/auction_cell_rep/auction_cell_rep.go#L146</br>
+* æ‰§è¡ŒLRPséƒ¨åˆ†ï¼š</br>
 
 		if len(work.LRPs) > 0 {
 			lrpLogger := logger.Session("lrp-allocate-instances")
 
 			containers, lrpAuctionMap, untranslatedLRPs := a.lrpsToContainers(work.LRPs)
 			
-			//lrpsToContainers(work.LRPs)·½·¨¿ÉÒÔ»ñÈ¡ÈİÆ÷ÅäÖÃ£¬auction¼¯ºÏ£¬Î´¶¨ÒåµÄLRPs
+			//lrpsToContainers(work.LRPs)æ–¹æ³•å¯ä»¥è·å–å®¹å™¨é…ç½®ï¼Œauctioné›†åˆï¼Œæœªå®šä¹‰çš„LRPs
 			
 			if len(untranslatedLRPs) > 0 {
 				lrpLogger.Info("failed-to-translate-lrps-to-containers", lager.Data{"num-failed-to-translate": len(untranslatedLRPs)})
@@ -148,7 +150,7 @@ https://github.com/cloudfoundry-incubator/rep/blob/6676dde8901ba3c483602e48ff8f8
 
 			lrpLogger.Info("requesting-container-allocation", lager.Data{"num-requesting-allocation": len(containers)})
 			
-			//ÕâÀï¿ªÊ¼·ÖÅäÈİÆ÷
+			//è¿™é‡Œå¼€å§‹åˆ†é…å®¹å™¨
 			errMessageMap, err := a.client.AllocateContainers(containers)
 			
 			if err != nil {
@@ -164,13 +166,14 @@ https://github.com/cloudfoundry-incubator/rep/blob/6676dde8901ba3c483602e48ff8f8
 			}
 		}
 
-¿´µ½Õâ¸öº¯Êı£ºrpsToContainers</br>
-Ê×ÏÈËü»á±éÀúËùÓĞµÄLRPs,È»ºó¸ù¾İlrpµÄĞÅÏ¢¹¹Ôì³öÃ¿Ò»¸öÈİÆ÷µÄ×ÊÔ´µÈĞÅÏ¢</br>
+è·Ÿè¿›å‡½æ•°ï¼šlrpsToContainers lrpsåˆ†é…å®¹å™¨åŠŸèƒ½</br>
+https://github.com/cloudfoundry-incubator/rep/blob/f0ef73a6898b72f9c031de6fa478795502b58425/auction_cell_rep/auction_cell_rep.go#L209</br>
+é¦–å…ˆå®ƒä¼šéå†æ‰€æœ‰çš„LRPs,ç„¶åæ ¹æ®lrpçš„ä¿¡æ¯æ„é€ å‡ºä¸€ä¸ªå®¹å™¨çš„èµ„æºç­‰ä¿¡æ¯</br>
 
 		containerGuid := rep.LRPContainerGuid(lrpStart.DesiredLRP.ProcessGuid, instanceGuid)
 		lrpAuctionMap[containerGuid] = lrpStart
 
-¾ßÌå¿´Ò»ÏÂÕâ¸öcontainerÊÇÈçºÎ¹¹ÔìµÄ£º</br>
+å…·ä½“çœ‹ä¸€ä¸‹è¿™ä¸ªcontaineræ˜¯å¦‚ä½•æ„é€ çš„ï¼š</br>
 
 		container := executor.Container{
 			Guid: containerGuid,
@@ -207,6 +210,7 @@ https://github.com/cloudfoundry-incubator/rep/blob/6676dde8901ba3c483602e48ff8f8
 			Action:  lrpStart.DesiredLRP.Action,
 			Monitor: lrpStart.DesiredLRP.Monitor,
 
+			//è¿™ä¸ªåœ°æ–¹å°±è¦å¼€å¯æŒ‡å®šIPçš„åŠŸèƒ½
 			Env: append([]executor.EnvironmentVariable{
 				{Name: "INSTANCE_GUID", Value: instanceGuid},
 				{Name: "INSTANCE_INDEX", Value: strconv.Itoa(lrpStart.Index)},
@@ -216,14 +220,14 @@ https://github.com/cloudfoundry-incubator/rep/blob/6676dde8901ba3c483602e48ff8f8
 			EgressRules: lrpStart.DesiredLRP.EgressRules,
 		}
 
-ÆäÊµ¾ÍÊÇDesiredLRPs¶¨ÒåµÄÒ»Ğ©Çåµ¥,ÒòÎªÖ´ĞĞÆ÷ºÍrepÊÇÃÜÇĞÏà¹ØµÄ£¬ËùÒÔÎÒÃÇ¿ÉÒÔ¿´¿´ËüÊÇÔõÃ´·ÖÅäÕâ¸öÈİÆ÷µÄ£º</br>
-¾ÍÊÇÉÏÃæÕâ¸öº¯Êı</br>
+å…¶å®å°±æ˜¯DesiredLRPså®šä¹‰çš„ä¸€äº›æ¸…å•,å› ä¸ºæ‰§è¡Œå™¨å’Œrepæ˜¯å¯†åˆ‡ç›¸å…³çš„ï¼Œæ‰€ä»¥æˆ‘ä»¬å¯ä»¥çœ‹çœ‹å®ƒæ˜¯æ€ä¹ˆåˆ†é…è¿™ä¸ªå®¹å™¨çš„ï¼š</br>
+å°±æ˜¯ä¸Šé¢è¿™ä¸ªå‡½æ•°</br>
 
 		errMessageMap, err := a.client.AllocateContainers(containers)
 
-* Ö±½ÓÀ´µ½https://github.com/cloudfoundry-incubator/executor/blob/6c38b2fe1a175d8074e0e0164bc9841fd023161c/depot/depot.go#L110</br>
+* ç›´æ¥æ¥åˆ°https://github.com/cloudfoundry-incubator/executor/blob/6c38b2fe1a175d8074e0e0164bc9841fd023161c/depot/depot.go#L110</br>
 
-		//·ÖÅäÈİÆ÷Ç°µÄÔ¤±¸¹¤×÷
+		//åˆ†é…å®¹å™¨å‰çš„é¢„å¤‡å·¥ä½œ
 		for _, executorContainer := range executorContainers {
 			if executorContainer.CPUWeight > 100 || executorContainer.CPUWeight < 0 {
 				logger.Debug("invalid-cpu-weight", lager.Data{
@@ -233,7 +237,7 @@ https://github.com/cloudfoundry-incubator/rep/blob/6676dde8901ba3c483602e48ff8f8
 				errMessageMap[executorContainer.Guid] = executor.ErrLimitsInvalid.Error()
 				continue
 			} else if executorContainer.CPUWeight == 0 {
-				//Èç¹ûÊÇ0£¬Ôò¸ø×î¸ßÈ¨ÖØ100
+				//å¦‚æœæ˜¯0ï¼Œåˆ™ç»™æœ€é«˜æƒé‡100
 				executorContainer.CPUWeight = 100
 			}
 
@@ -246,13 +250,13 @@ https://github.com/cloudfoundry-incubator/rep/blob/6676dde8901ba3c483602e48ff8f8
 			eligibleContainers = append(eligibleContainers, executorContainer)
 		}
 		
-ÕâÒ»¶ÎÊÇ¶ÔcontainerÈİÆ÷¶¨ÒåµÄcpuÓÅÏÈ¼¶È¨Öµ½øĞĞÅĞ¶Ï£¬ºÜºÃÀí½â</br>
+è¿™ä¸€æ®µæ˜¯å¯¹containerå®¹å™¨å®šä¹‰çš„cpuä¼˜å…ˆçº§æƒå€¼è¿›è¡Œåˆ¤æ–­ï¼Œå¾ˆå¥½ç†è§£</br>
 
-È»ºó¿´µ½£¬ËüÏÈ¼ÓÁËÒ»¸ö×ÊÔ´Ëø£º</br>
+ç„¶åçœ‹åˆ°,å…ˆç»™èµ„æºä¸Šé”,åŒæ­¥,é˜²æ­¢å¹²æ‰°ï¼š</br>
 
 		c.resourcesLock.Lock()
 
-È»ºó¶Ô¿É·ÖÅäµÄÈİÆ÷·ÖÅäÈİÆ÷×ÊÔ´£º</br>
+ç„¶åå¯¹å¯åˆ†é…çš„å®¹å™¨åˆ†é…å®¹å™¨èµ„æºï¼š</br>
 
 		for _, allocatableContainer := range allocatableContainers {
 			if _, err := c.allocationStore.Allocate(logger, allocatableContainer); err != nil {
@@ -267,7 +271,8 @@ https://github.com/cloudfoundry-incubator/rep/blob/6676dde8901ba3c483602e48ff8f8
 			}
 		}
 		
-ÎÒÃÇ¿ÉÒÔ¼ÌĞø¸úµ½Õâ¸öº¯Êı£ºc.allocationStore.Allocate(logger, allocatableContainer)</br>
+ç»§ç»­è·Ÿåˆ°è¿™ä¸ªå‡½æ•°ï¼šc.allocationStore.Allocate(logger, allocatableContainer)</br>
+å‰æœŸå®šä¹‰äº†ä¸€å †çš„å®¹å™¨èµ„æºæ¸…å•,åˆ°è¿™é‡Œå°±å¯ä»¥æ ¹æ®è¿™äº›åˆ—è¡¨æ¥åˆ†é…å®¹å™¨èµ„æºäº†</br>
 https://github.com/cloudfoundry-incubator/executor/blob/6c38b2fe1a175d8074e0e0164bc9841fd023161c/depot/allocationstore/allocationstore.go#L49</br>
 
 		func (a *AllocationStore) Allocate(logger lager.Logger, container executor.Container) (executor.Container, error) {
@@ -289,7 +294,7 @@ https://github.com/cloudfoundry-incubator/executor/blob/6c38b2fe1a175d8074e0e016
 			return container, nil
 		}
 
-ÈİÆ÷·ÖÅäÍê£¬ÎÒÃÇÀ´¿´Ò»·İ´´½¨Çåµ¥£º</br>
+å®¹å™¨åˆ†é…å®Œï¼Œæˆ‘ä»¬æ¥çœ‹ä¸€ä»½æˆåŠŸè¿”å›çš„æ¸…å•ï¼š</br>
 
 		{
 		  "timestamp": "1441087134.999691010", 
@@ -458,9 +463,9 @@ https://github.com/cloudfoundry-incubator/executor/blob/6c38b2fe1a175d8074e0e016
 		  }
 		}
 
-ÕâÖ»ÊÇÒ»¸ö**task**ĞĞÎª¶¯×÷£¬¸ÕºÃ¶ÔÓ¦ÉÏÎÒÃÇÖ®Ç°¿´µ½µÄstager²¿·ÖÔÚÓöµ½dockerÖ»»áÔËĞĞÒ»´Îtask£¬¾ÍÊÇÔ¤½¨Á¢ÈİÆ÷£¬²é¿´docker imageÊÇ·ñ±»»º´æµÈµÈ¡£</br>
+è¿™åªæ˜¯ä¸€ä¸ª**task**è¡Œä¸ºåŠ¨ä½œï¼Œåˆšå¥½å¯¹åº”ä¸Šæˆ‘ä»¬ä¹‹å‰çœ‹åˆ°çš„stageréƒ¨åˆ†åœ¨é‡åˆ°dockeråªä¼šè¿è¡Œä¸€æ¬¡taskï¼Œå°±æ˜¯é¢„å»ºç«‹å®¹å™¨ï¼ŒæŸ¥çœ‹docker imageæ˜¯å¦è¢«ç¼“å­˜ç­‰ç­‰ã€‚</br>
 
-* È»ºó¾ÍÖ±½ÓËÍµ½ÁËLRPÖĞÈ¥£ºÕâÊ±ºòÒÑ¾­ÊÇÒ»¸öÊµÀı¿©</br>
+* ç„¶åå°±ç›´æ¥é€åˆ°äº†LRPä¸­å»ï¼šè¿™æ—¶å€™å·²ç»æ˜¯ä¸€ä¸ªå®ä¾‹å’¯</br>
 
 		{
 		  "timestamp": "1441087199.705446482", 
@@ -702,24 +707,24 @@ https://github.com/cloudfoundry-incubator/executor/blob/6c38b2fe1a175d8074e0e016
 		  }
 		}
 
-×¢Òâ¿´ÉÏÃæµÄÇø±ğ£º</br>
+æ³¨æ„çœ‹ä¸Šé¢çš„åŒºåˆ«ï¼š</br>
 
-> lifecycle£ºÒ»¸öÊÇtask£¬ÏÂÃæÕâ¸öÊÇlrp£¬
-> rootfs: Ò»¸öÊÇrootfs_cflinuxfs2/rootfs£¬Ò»¸öÊÇdocker:///tutum/tomcat#8.0
+> lifecycleï¼šä¸€ä¸ªæ˜¯taskï¼Œä¸‹é¢è¿™ä¸ªæ˜¯lrpï¼Œ
+> rootfs: ä¸€ä¸ªæ˜¯rootfs_cflinuxfs2/rootfsï¼Œä¸€ä¸ªæ˜¯docker:///tutum/tomcat#8.0
 
-ÆäËüµÄ²»¿´ÁË£¬ÎÒÃÇ´Ó¸Õ²Å´ò°üstager¿ÉÒÔ¿´µ½Ò»Ğ©dockerµÄÏà¹ØÎÄ¼ş£º</br>
+å…¶å®ƒçš„ä¸çœ‹äº†ï¼Œæˆ‘ä»¬ä»åˆšæ‰æ‰“åŒ…stagerå¯ä»¥çœ‹åˆ°ä¸€äº›dockerçš„ç›¸å…³æ–‡ä»¶ï¼š</br>
 
-Èçdocker£º</br>
+å¦‚dockerï¼š</br>
 
-> Client version: 1.6.2
-> Client API version: 1.18
-> Go version (client): go1.4.2
-> Git commit (client): 7c8fca2
-> OS/Arch (client): linux/amd64
+> Client version: 1.6.2 </br>
+> Client API version: 1.18</br>
+> Go version (client): go1.4.2</br>
+> Git commit (client): 7c8fca2</br>
+> OS/Arch (client): linux/amd64</br>
 
-ËµÃ÷ÊÇ1.6.2µÄ°æ±¾</br>
-ÕâÀïÑÓÉìÒ»¸öÖªÊ¶µã£¬¾ÍÊÇÈç¹ûÎÒÃÇÓĞË½·şÔõÃ´°ì£¬²»¹ıÕâ¸öÒ²²»ÓÃ²ÙĞÄdiegoÒ²¸øÎÒÃÇ×öºÃÁË</br>
-Èçbuilder£¬Õâ¸öÌ«Ë¬ÁË£º</br> ´Ë´¦´Óstager´¦Ò²ÄÜ¿´µ½£¬Ö»²»¹ıÔÚÕâÀï¸üÃ÷ÏÔ</br>
+è¯´æ˜æ˜¯1.6.2çš„ç‰ˆæœ¬</br>
+è¿™é‡Œå»¶ä¼¸ä¸€ä¸ªçŸ¥è¯†ç‚¹ï¼Œå°±æ˜¯å¦‚æœæˆ‘ä»¬æœ‰ç§æœæ€ä¹ˆåŠï¼Œä¸è¿‡è¿™ä¸ªä¹Ÿä¸ç”¨æ“å¿ƒdiegoä¹Ÿç»™æˆ‘ä»¬åšå¥½äº†</br>
+å¦‚builderï¼Œè¿™ä¸ªå¤ªçˆ½äº†ï¼š</br> æ­¤å¤„ä»stagerå¤„ä¹Ÿèƒ½çœ‹åˆ°ï¼Œåªä¸è¿‡åœ¨è¿™é‡Œæ›´æ˜æ˜¾</br>
 
 		-cacheDockerImage=false: Caches Docker images to private docker registry
 		-dockerDaemonExecutablePath="/tmp/docker_app_lifecycle/docker": path to the 'docker' executable
@@ -735,26 +740,26 @@ https://github.com/cloudfoundry-incubator/executor/blob/6c38b2fe1a175d8074e0e016
 		-insecureDockerRegistries=[]: insecure Docker Registry addresses (host:port)
 		-outputMetadataJSONFilename="/tmp/result/result.json": filename in which to write the app metadata
 
-»¹ÓĞ¸ö**launcher**£¬Ò»°ãÊÇ×öÖ´ĞĞdockerÀï¶¨ÒåµÄ½Å±¾Ê¹ÓÃ</br>
+è¿˜æœ‰ä¸ª**launcher**ï¼Œä¸€èˆ¬æ˜¯åšæ‰§è¡Œdockeré‡Œå®šä¹‰çš„è„šæœ¬ä½¿ç”¨</br>
 
-»¹ÓĞÒ»¸öÁ¬½ÓsshdµÄdiego-sshd¹¤¾ß£º</br>
+è¿˜æœ‰ä¸€ä¸ªè¿æ¥sshdçš„diego-sshdå·¥å…·ï¼š</br>
 
-		diego-sshd
-		-address=0.0.0.0:2222£¬
-		-hostKey="",
-		-authorizedKey="rsa ---"
-		-inheritDaemonEnv
-		-logLevel=fatal
+		diego-sshd</br>
+		-address=0.0.0.0:2222ï¼Œ</br>
+		-hostKey="",</br>
+		-authorizedKey="rsa ---"</br>
+		-inheritDaemonEnv</br>
+		-logLevel=fatal</br>
 
-×îºóÒ»¸öhealthcheck</br>
+æœ€åä¸€ä¸ªhealthcheck</br>
 
-		Õâ¸öÆäÊµÔÚ·ÖÎöÖ®Ç°µÄÔ´ÂëÊ±ºò£¬¿ÉÒÔÁôÒâÒ»ÏÂ£¬½¡¿µ¼à²âÓĞ¼¸ÖÖ·½Ê½£¬Õâ¸öÊÇ¸ù¾İportÀ´½øĞĞ¼ì²âµÄ£º
+		è¿™ä¸ªå…¶å®åœ¨åˆ†æä¹‹å‰çš„æºç æ—¶å€™ï¼Œå¯ä»¥ç•™æ„ä¸€ä¸‹ï¼Œå¥åº·ç›‘æµ‹æœ‰å‡ ç§æ–¹å¼ï¼Œè¿™ä¸ªæ˜¯æ ¹æ®portæ¥è¿›è¡Œæ£€æµ‹çš„ï¼š
 		-port=8080
-		ÎÒÃÇ¿ÉÒÔÔÚ±¾»úÉÏÖ´ĞĞÒ»ÏÂ£º
+		æˆ‘ä»¬å¯ä»¥åœ¨æœ¬æœºä¸Šæ‰§è¡Œä¸€ä¸‹ï¼š
 		vagrant@agent-id-bosh-0:~$ ./healthcheck -port 22
 		healthcheck passed
 
-* ËµÍê´´½¨ÈİÆ÷£¬»¹ĞèÒªÁË½âÒ»ÏÂrepÊÇÈçºÎ°ÑÈİÆ÷Æô¶¯µÄ£º</br>
+* æˆåŠŸåˆ›å»ºå®¹å™¨åï¼Œrepå¼€å§‹å¯åŠ¨å®¹å™¨ï¼š</br>
 https://github.com/cloudfoundry-incubator/rep/blob/ab1835570afb992ff756f5d0b3dcb7af1978b639/generator/internal/container_delegate.go#L49</br>
 
 		func (d *containerDelegate) RunContainer(logger lager.Logger, guid string) bool {
@@ -769,7 +774,8 @@ https://github.com/cloudfoundry-incubator/rep/blob/ab1835570afb992ff756f5d0b3dcb
 			return true
 		}
 
-ÏÈrun£¬¿´ÓĞÃ»ÓĞ´í£¬ÓĞÁËÔòÉ¾³ıÈİÆ÷£¬È»ºó½øµ½Õâ¸örunContainer¿´¿´ËüÊÇÔõÃ´¹¤×÷µÄ£º</br>
+å…ˆrunï¼Œæ£€æŸ¥æ˜¯å¦å‡ºé”™ï¼Œæœ‰äº†åˆ™åˆ é™¤å®¹å™¨</br>
+ç„¶åè¿›åˆ°è¿™ä¸ªrunContainerçœ‹çœ‹å®ƒæ˜¯æ€ä¹ˆå·¥ä½œçš„ï¼š</br>
 https://github.com/cloudfoundry-incubator/executor/blob/6c38b2fe1a175d8074e0e0164bc9841fd023161c/depot/depot.go#L209</br>
 
 		func (c *client) RunContainer(guid string) error {
@@ -778,7 +784,7 @@ https://github.com/cloudfoundry-incubator/executor/blob/6c38b2fe1a175d8074e0e016
 			})
 
 			logger.Debug("initializing-container")
-			//³õÊ¼»¯ÈİÆ÷
+			//åˆå§‹åŒ–å®¹å™¨
 			err := c.allocationStore.Initialize(logger, guid)
 			if err != nil {
 				logger.Error("failed-initializing-container", err)
@@ -804,7 +810,7 @@ https://github.com/cloudfoundry-incubator/executor/blob/6c38b2fe1a175d8074e0e016
 				}
 
 				logger.Info("creating-container-in-garden")
-				//ÔÚgardenÖĞ´´½¨ÈİÆ÷
+				//åœ¨gardenä¸­åˆ›å»ºå®¹å™¨
 				container, err = c.gardenStore.Create(logger, container)
 				if err != nil {
 					logger.Error("failed-creating-container-in-garden", err)
@@ -814,7 +820,7 @@ https://github.com/cloudfoundry-incubator/executor/blob/6c38b2fe1a175d8074e0e016
 				logger.Info("succeeded-creating-container-in-garden")
 
 				if !c.allocationStore.Deallocate(logger, guid) {
-					//Èç¹ûÊ§°ÜÔòÏú»ÙÈİÆ÷ºÍÈİÆ÷¶¨Òå
+					//å¦‚æœå¤±è´¥åˆ™é”€æ¯å®¹å™¨å’Œå®¹å™¨å®šä¹‰
 					logger.Info("container-deallocated-during-initialization")
 
 					err = c.gardenStore.Destroy(logger, guid)
@@ -826,7 +832,7 @@ https://github.com/cloudfoundry-incubator/executor/blob/6c38b2fe1a175d8074e0e016
 				}
 
 				logger.Info("running-container-in-garden")
-				//Ö´ĞĞÔËĞĞÈİÆ÷µÄÃüÁî
+				//æ‰§è¡Œè¿è¡Œå®¹å™¨çš„å‘½ä»¤
 				err = c.gardenStore.Run(logger, container)
 				if err != nil {
 					logger.Error("failed-running-container-in-garden", err)
@@ -837,7 +843,7 @@ https://github.com/cloudfoundry-incubator/executor/blob/6c38b2fe1a175d8074e0e016
 			return nil
 		}
 
---->Ç°ÃæÒ»Ö±¶¼ÊÇ³õÊ¼»¯¹¤×÷£¬¸úµ½ÈİÆ÷ÊÇÔõÃ´±»garden´´½¨µÄ£ºcontainer, err = c.gardenStore.Create(logger, container)</br>
+--->å‰é¢ä¸€ç›´éƒ½æ˜¯åˆå§‹åŒ–å·¥ä½œï¼Œè·Ÿåˆ°å®¹å™¨æ˜¯æ€ä¹ˆè¢«gardenåˆ›å»ºçš„ï¼šcontainer, err = c.gardenStore.Create(logger, container)</br>
 https://github.com/cloudfoundry-incubator/executor/blob/6c38b2fe1a175d8074e0e0164bc9841fd023161c/depot/gardenstore/garden_store.go#L145</br>
 
 		func (store *GardenStore) Create(logger lager.Logger, container executor.Container) (executor.Container, error) {
@@ -854,7 +860,7 @@ https://github.com/cloudfoundry-incubator/executor/blob/6c38b2fe1a175d8074e0e016
 
 			fmt.Fprintf(logStreamer.Stdout(), "Creating container\n")
 			
-			//¹Ø¼ü£¬ÕâÀï²ÅÊÇgarden´´½¨ÈİÆ÷µÄÈë¿Ú
+			//å…³é”®ï¼Œè¿™é‡Œæ‰æ˜¯gardenåˆ›å»ºå®¹å™¨çš„å…¥å£
 			container, err := store.exchanger.CreateInGarden(logger, store.gardenClient, container)
 			if err != nil {
 				fmt.Fprintf(logStreamer.Stderr(), "Failed to create container\n")
@@ -866,20 +872,20 @@ https://github.com/cloudfoundry-incubator/executor/blob/6c38b2fe1a175d8074e0e016
 			return container, nil
 		}
 
-* ¸úµ½ÈİÆ÷´´½¨µÄÈë¿Ú£ºstore.exchanger.CreateInGarden(logger, store.gardenClient, container)</br>
-²»Ï§Ò»ÇĞ°Ñ´úÂëÕ³ÉÏÀ´£º</br>
+* è·Ÿåˆ°å®¹å™¨åˆ›å»ºçš„å…¥å£ï¼šstore.exchanger.CreateInGarden(logger, store.gardenClient, container)</br>
+ä¸æƒœä¸€åˆ‡æŠŠä»£ç ç²˜ä¸Šæ¥ï¼š</br>
 
 		func (exchanger exchanger) CreateInGarden(logger lager.Logger, gardenClient GardenClient, executorContainer executor.Container) (executor.Container, error) {
 			logger = logger.Session("create-in-garden", lager.Data{"container-guid": executorContainer.Guid})
 			
-			//ÈİÆ÷»ù±¾ĞÅÏ¢
+			//å®¹å™¨åŸºæœ¬ä¿¡æ¯
 			containerSpec := garden.ContainerSpec{
 				Handle:     executorContainer.Guid,
 				Privileged: executorContainer.Privileged,
 				RootFSPath: executorContainer.RootFSPath,
 			}
 
-			//ÄÚÉèÖÃÈİÆ÷²¢½«ÄÚ´æ×ª»»³Ébytes
+			//å†…è®¾ç½®å®¹å™¨å¹¶å°†å†…å­˜è½¬æ¢æˆbytes
 			if executorContainer.MemoryMB != 0 {
 				logger.Debug("setting-up-memory-limits")
 				containerSpec.Limits.Memory.LimitInBytes = uint64(executorContainer.MemoryMB * 1024 * 1024)
@@ -888,10 +894,10 @@ https://github.com/cloudfoundry-incubator/executor/blob/6c38b2fe1a175d8074e0e016
 			logger.Debug("setting-up-disk-limits")
 			
 			//const DiskLimitScopeExclusive DiskLimitScope = 1
-			//´ÅÅÌÅä¶îÏŞÖÆ ÕâÀï½âÊÍÒ»ÏÂ£¬¶®ÔËÎ¬µÄ¿ÉÒÔÂÓ¹ı£º
-			//dd if=/dev/hda of=/root/image count=1 bs=512 ÕâÀïÊÇ½«512byteµÄÊı¾İ¿¼µ½/root/imageÀïÈ¥£¬ÕâÀï¾ÍÊÇËùÎ½µÄmbr±¸·İ
-			//if ´ú±í´ÓÊ²Ã´µØ·½£¬ofÊÇĞ´ÈëÄÄÀï£¬bsÊÇÊäÈëÊä³öÃ¿¿éµÄ×Ö½ÚÊı£¬count´ú±íÁËÒªĞ´µÄ¿éÊı
-			//Èç¹ûÖ®Ç°×öÁË¶ÔÄ³¸öÎÄ¼şµÄÅä¶îÏŞÖÆ£¬ÔòÔÚ³¬¹ıµÄÊ±ºò£¬½«»á±¨´í£¬²»ÔÙÏòÀïĞ´ÈëÊı¾İ
+			//ç£ç›˜é…é¢é™åˆ¶ è¿™é‡Œè§£é‡Šä¸€ä¸‹ï¼Œæ‡‚è¿ç»´çš„å¯ä»¥æ è¿‡ï¼š
+			//dd if=/dev/hda of=/root/image count=1 bs=512 è¿™é‡Œæ˜¯å°†512byteçš„æ•°æ®è€ƒåˆ°/root/imageé‡Œå»ï¼Œè¿™é‡Œå°±æ˜¯æ‰€è°“çš„mbrå¤‡ä»½
+			//if ä»£è¡¨ä»ä»€ä¹ˆåœ°æ–¹ï¼Œofæ˜¯å†™å…¥å“ªé‡Œï¼Œbsæ˜¯è¾“å…¥è¾“å‡ºæ¯å—çš„å­—èŠ‚æ•°ï¼Œcountä»£è¡¨äº†è¦å†™çš„å—æ•°
+			//å¦‚æœä¹‹å‰åšäº†å¯¹æŸä¸ªæ–‡ä»¶çš„é…é¢é™åˆ¶ï¼Œåˆ™åœ¨è¶…è¿‡çš„æ—¶å€™ï¼Œå°†ä¼šæŠ¥é”™ï¼Œä¸å†å‘é‡Œå†™å…¥æ•°æ®
 			gardenScope := garden.DiskLimitScopeExclusive
 			
 			//DiskLimitScopeTotal DiskLimitScope = 0
@@ -900,8 +906,8 @@ https://github.com/cloudfoundry-incubator/executor/blob/6c38b2fe1a175d8074e0e016
 				gardenScope = garden.DiskLimitScopeTotal
 			}
 			
-			//Ò»°ãdockerÀïÄ¬ÈÏµÄDiskMB¶¼ÊÇ1024M
-			//ContainerInodeLimit: 200000 inodeÄ¬ÈÏÎª200000¸ö
+			//ä¸€èˆ¬dockeré‡Œé»˜è®¤çš„DiskMBéƒ½æ˜¯1024M
+			//ContainerInodeLimit: 200000 inodeé»˜è®¤ä¸º200000ä¸ª
 			containerSpec.Limits.Disk = garden.DiskLimits{
 				ByteHard:  uint64(executorContainer.DiskMB * 1024 * 1024),
 				InodeHard: exchanger.containerInodeLimit,
@@ -910,9 +916,9 @@ https://github.com/cloudfoundry-incubator/executor/blob/6c38b2fe1a175d8074e0e016
 
 			logger.Debug("setting-up-cpu-limits")
 			
-			//ContainerMaxCpuShares: 0 ¿´µ½Õâ¸öÓ¦¸ÃºÜÊìÏ¤£¬ËûÊÇcgroupµÄÒ»¸ö×ÓÏµÍ³ 0Îª²»ÏŞÖÆ
-			//containerMaxCpuShares=1024 ²»¹ıÎÒÃÇÔÚÆô¶¯repµÄÊ±ºòÒÑ¾­Éè¶¨ÁË¸ÃÖµÊÇ1024
-			//ÖÁÓÚÈ¨Öµ£¬ÎÒÃÇÔÚ·ÖÅäÈİÆ÷µÄÊ±ºòÒÑ¾­²ÉÓÃÁËÄ¬ÈÏµÄ100 ¾ßÌåÇë¿´ÉÏÃæµÄAllocateContainers
+			//ContainerMaxCpuShares: 0 çœ‹åˆ°è¿™ä¸ªåº”è¯¥å¾ˆç†Ÿæ‚‰ï¼Œä»–æ˜¯cgroupçš„ä¸€ä¸ªå­ç³»ç»Ÿ 0ä¸ºä¸é™åˆ¶
+			//containerMaxCpuShares=1024 ä¸è¿‡æˆ‘ä»¬åœ¨å¯åŠ¨repçš„æ—¶å€™å·²ç»è®¾å®šäº†è¯¥å€¼æ˜¯1024
+			//è‡³äºæƒå€¼ï¼Œæˆ‘ä»¬åœ¨åˆ†é…å®¹å™¨çš„æ—¶å€™å·²ç»é‡‡ç”¨äº†é»˜è®¤çš„100 å…·ä½“è¯·çœ‹ä¸Šé¢çš„AllocateContainers
 			containerSpec.Limits.CPU.LimitInShares = uint64(float64(exchanger.containerMaxCPUShares) * float64(executorContainer.CPUWeight) / 100.0)
 
 			logJson, err := json.Marshal(executorContainer.LogConfig)
@@ -933,7 +939,7 @@ https://github.com/cloudfoundry-incubator/executor/blob/6c38b2fe1a175d8074e0e016
 				return executor.Container{}, err
 			}
 
-			//È»ºó¾ÍÊÇÒ»Ğ©Çåµ¥ÊôĞÔ
+			//ç„¶åå°±æ˜¯ä¸€äº›æ¸…å•å±æ€§
 			containerSpec.Properties = garden.Properties{
 				ContainerOwnerProperty:         exchanger.containerOwnerName,
 				ContainerStateProperty:         string(executorContainer.State),
@@ -971,7 +977,7 @@ https://github.com/cloudfoundry-incubator/executor/blob/6c38b2fe1a175d8074e0e016
 			}
 			logger.Debug("succeeded-creating-garden-container")
 
-			//ÉèÖÃ¶Ë¿ÚºÍÖ÷»úÓ³Éä¶Ë¿Ú
+			//è®¾ç½®ç«¯å£å’Œä¸»æœºæ˜ å°„ç«¯å£
 			if executorContainer.Ports != nil {
 				actualPortMappings := make([]executor.PortMapping, len(executorContainer.Ports))
 
@@ -992,7 +998,7 @@ https://github.com/cloudfoundry-incubator/executor/blob/6c38b2fe1a175d8074e0e016
 				executorContainer.Ports = actualPortMappings
 			}
 
-			//ÉèÖÃ°²È«×é ÆäÊµÊÇÔÚÈİÆ÷ÀïÉèÖÃiptables
+			//è®¾ç½®å®‰å…¨ç»„ å…¶å®æ˜¯åœ¨å®¹å™¨é‡Œè®¾ç½®iptables
 			//https://github.com/cloudfoundry-incubator/executor/blob/229bbf2af858bc00d14320249a4c16d908435682/depot/gardenstore/exchanger.go#L379
 			for _, securityRule := range executorContainer.EgressRules {
 				netOutRule, err := securityGroupRuleToNetOutRule(securityRule)
@@ -1025,22 +1031,22 @@ https://github.com/cloudfoundry-incubator/executor/blob/6c38b2fe1a175d8074e0e016
 			}
 			logger.Debug("succeeded-getting-garden-container-info")
 
-			//Èç¹ûÉèÖÃÁËexternalIp¾Í»áÓĞÕâ¸ö£¬Ò»°ãÎª¿Õ
+			//å¦‚æœè®¾ç½®äº†externalIpå°±ä¼šæœ‰è¿™ä¸ªï¼Œä¸€èˆ¬ä¸ºç©º
 			executorContainer.ExternalIP = info.ExternalIP
 
 			return executorContainer, nil
 		}
 
-ÆäËüµÄ²»Ïë·ÖÎöÁË£¬ÎŞ·Ç¾ÍÊÇ´¦ÀíLRPs½ø³ÌÊµÀıºÍÈÎÎñÖ®ÀàµÄ£¬×ÜÖ®¶¼»á×ßµ½gardenÄÇÒ»²ã¡£</br>
+å…¶å®ƒçš„ä¸æƒ³åˆ†æäº†ï¼Œæ— éå°±æ˜¯å¤„ç†LRPsè¿›ç¨‹å®ä¾‹å’Œä»»åŠ¡ä¹‹ç±»çš„ï¼Œæ€»ä¹‹éƒ½ä¼šèµ°åˆ°gardené‚£ä¸€å±‚ã€‚</br>
 
-### Garden×é¼ş·ÖÎö
-ÏÈ¿´ËüµÄÆô¶¯²ÎÊı£º</br>
+### Gardenç»„ä»¶åˆ†æ
+å…ˆçœ‹å®ƒçš„å¯åŠ¨å‚æ•°ï¼š</br>
 
-		#´´½¨cgroupÉè±¸Ä¿Â¼ ²¢½«Éè±¸×ÓÏµÍ³¹ÒÔØµ½cgroupÀïÈ¥
+		#åˆ›å»ºcgroupè®¾å¤‡ç›®å½• å¹¶å°†è®¾å¤‡å­ç³»ç»ŸæŒ‚è½½åˆ°cgroupé‡Œå»
 		mkdir /tmp/devices-cgroup
 		mount -t cgroup -o $devices_subsytems none /tmp/devices-cgroup
    
-		#´´½¨btrfsÎÄ¼şÏµÍ³£¬²¢¹ÒÔØ
+		#åˆ›å»ºbtrfsæ–‡ä»¶ç³»ç»Ÿï¼Œå¹¶æŒ‚è½½
 		backing_store=/var/vcap/data/garden/garden_graph_backing_store 
 		graph_path=/var/vcap/data/garden/btrfs_graph
 		mount_point=$graph_path
@@ -1064,7 +1070,7 @@ https://github.com/cloudfoundry-incubator/executor/blob/6c38b2fe1a175d8074e0e016
 		-rootfs=/var/vcap/packages/busybox \
 		-containerGraceTime=5m
 	  
-ÏµÍ³µÄrootfses:</br>
+ç³»ç»Ÿçš„rootfses:</br>
 
 		mkdir -p $RUN_DIR
 		chown -R vcap:vcap $RUN_DIR
@@ -1079,7 +1085,7 @@ https://github.com/cloudfoundry-incubator/executor/blob/6c38b2fe1a175d8074e0e016
 		  tar -pzxf $ROOTFS_PACKAGE/cflinuxfs2.tar.gz -C $ROOTFS_DIR
 		fi
 
-### ·ÖÎö£º</br>
+### åˆ†æï¼š</br>
 Garden:
 
 * create/delete containers
@@ -1090,11 +1096,11 @@ Garden:
 * annotate containers with arbitrary metadata
 * snapshot containers for down-timeless redeploys
 
-¿´µ½×îºóÒ»Ìõ£¬ÖØĞÂ²¿ÊğµÄÊ±ºòÄÜ½¨Á¢¿ìÕÕ£¬ÆäËüµÄ¶¼ÊÇ»ù´¡µÄ×ÊÔ´¸ôÀë»¹Ó¦ÓÃ</br>
+çœ‹åˆ°æœ€åä¸€æ¡ï¼Œé‡æ–°éƒ¨ç½²çš„æ—¶å€™èƒ½å»ºç«‹å¿«ç…§ï¼Œå…¶å®ƒçš„éƒ½æ˜¯åŸºç¡€çš„èµ„æºéš”ç¦»è¿˜åº”ç”¨</br>
 
-ÕæÕı¸É»îµÄÊÇGarden-Linux</br>
+çœŸæ­£å¹²æ´»çš„æ˜¯Garden-Linux</br>
 
-»¹ÊÇÀÏÏ°¹ß£¬ÏÈ¿´routes ÕâÀï¿ÉÒÔºÜÇåÎúµÄ¿´µ½garden»á½ÓÊÕÄÄĞ©restfulµÄÇëÇó</br>
+è¿˜æ˜¯è€ä¹ æƒ¯ï¼Œå…ˆçœ‹routes è¿™é‡Œå¯ä»¥å¾ˆæ¸…æ™°çš„çœ‹åˆ°gardenä¼šæ¥æ”¶å“ªäº›restfulçš„è¯·æ±‚</br>
 
 		var Routes = rata.Routes{
 			{Path: "/ping", Method: "GET", Name: Ping},
@@ -1141,9 +1147,9 @@ Garden:
 			{Path: "/containers/:handle/metrics", Method: "GET", Name: Metrics},
 		}
 
-ÕâÀïµÄhandle¾ÍÊÇÖ®Ç°µÄcontainerµÄID£ºc181be6b-d89c-469c-b79c-4cab1e99b8de-6eac776b-f051-4cb0-9614-5a3954d1bfd6-fc4a83cd-5ed9-40fb-51bf-1679beb41bfe</br>
+è¿™é‡Œçš„handleå°±æ˜¯ä¹‹å‰çš„containerçš„IDï¼šc181be6b-d89c-469c-b79c-4cab1e99b8de-6eac776b-f051-4cb0-9614-5a3954d1bfd6-fc4a83cd-5ed9-40fb-51bf-1679beb41bfe</br>
 
-ÎÒÃÇ¿ÉÒÔËæ±ãÖ´ĞĞÒ»ÏÂ£º/info »ñÈ¡Ò»¸öÈİÆ÷µÄinfo</br>
+æˆ‘ä»¬å¯ä»¥éšä¾¿æ‰§è¡Œä¸€ä¸‹ï¼š/info è·å–ä¸€ä¸ªå®¹å™¨çš„info</br>
 
 		{
 		  "State": "active", 
@@ -1186,7 +1192,7 @@ Garden:
 		  ]
 		}
 
-ºÃÁË£¬ÎÒÃÇÀ´¿´¿´ÈİÆ÷ÊÇÔõÃ´´´½¨µÄ£º</br>
+å¥½äº†ï¼Œæˆ‘ä»¬æ¥çœ‹çœ‹å®¹å™¨æ˜¯æ€ä¹ˆåˆ›å»ºçš„ï¼š</br>
 https://github.com/cloudfoundry-incubator/garden/blob/master/server/request_handling.go#L52</br>
 
 		func (s *GardenServer) handleCreate(w http.ResponseWriter, r *http.Request) {
@@ -1213,7 +1219,7 @@ https://github.com/cloudfoundry-incubator/garden/blob/master/server/request_hand
 
 			hLog.Debug("creating")
 
-			//¹Ø¼ü¿´Õâ¸ö·½·¨£¬Ç°ÃæµÄ·½·¨¶¼ÊÇÔÚ¹¹½¨specÇåµ¥Ò²¾ÍÊÇtask»òÕßDesiredLspµÄÇåµ¥
+			//å…³é”®çœ‹è¿™ä¸ªæ–¹æ³•ï¼Œå‰é¢çš„æ–¹æ³•éƒ½æ˜¯åœ¨æ„å»ºspecæ¸…å•ä¹Ÿå°±æ˜¯taskæˆ–è€…DesiredLspçš„æ¸…å•
 			container, err := s.backend.Create(spec)
 			if err != nil {
 				s.writeError(w, err, hLog)
@@ -1229,7 +1235,7 @@ https://github.com/cloudfoundry-incubator/garden/blob/master/server/request_hand
 			})
 		}
 
-È»ºó¿´µ½ÕâÀï£ºhttps://github.com/cloudfoundry-incubator/garden/blob/master/client/connection/connection.go#L126</br>
+ç„¶åçœ‹åˆ°è¿™é‡Œï¼šhttps://github.com/cloudfoundry-incubator/garden/blob/master/client/connection/connection.go#L126</br>
 
 		func (c *connection) Create(spec garden.ContainerSpec) (string, error) {
 			res := struct {
@@ -1244,7 +1250,7 @@ https://github.com/cloudfoundry-incubator/garden/blob/master/server/request_hand
 			return res.Handle, nil
 		}
 
-¼ÌĞø,ÕâÀï¾ÍÊÇÇëÇójsonµÄ½âÎöÁË£¬²»¹ıÊµÏÖµÄºÜÓÅÑÅ£º</br>
+ç»§ç»­,è¿™é‡Œå°±æ˜¯è¯·æ±‚jsonçš„è§£æäº†ï¼Œä¸è¿‡å®ç°çš„å¾ˆä¼˜é›…ï¼š</br>
 
 		func (c *connection) do(
 			handler string,
@@ -1286,24 +1292,24 @@ https://github.com/cloudfoundry-incubator/garden/blob/master/server/request_hand
 			return json.NewDecoder(response).Decode(res)
 		}
 
-### ¼ÌĞøÍùgarden-linux¿´°É£¬ÕâÊÇ¸öÅÓ´ó£¬Ò²ÊÇÕû¸öÏµÍ³Àï×îºËĞÄµÄ²¿·ÖÁË
+### ç»§ç»­å¾€garden-linuxçœ‹å§ï¼Œè¿™æ˜¯ä¸ªåºå¤§ï¼Œä¹Ÿæ˜¯æ•´ä¸ªç³»ç»Ÿé‡Œæœ€æ ¸å¿ƒçš„éƒ¨åˆ†äº†
 
 * garden-linux
 
-µ±garden-server¸øgarden-linux·¢³ö½¨Á¢ÈİÆ÷µÄºÍÔËĞĞÈİÆ÷µÄÈÎÎñµÄÊ±ºò£¬ºó¶Ë¼´¿ªÊ¼Ö´ĞĞÏàÓ¦µÄ²Ù×÷</br>
+å½“garden-serverç»™garden-linuxå‘å‡ºå»ºç«‹å®¹å™¨çš„å’Œè¿è¡Œå®¹å™¨çš„ä»»åŠ¡çš„æ—¶å€™ï¼Œåç«¯å³å¼€å§‹æ‰§è¡Œç›¸åº”çš„æ“ä½œ</br>
 
-ÆäÖĞ**garden-server**ÔÚÆô¶¯µÄ¹ı³Ì£º</br>
+å…¶ä¸­**garden-server**åœ¨å¯åŠ¨çš„è¿‡ç¨‹ï¼š</br>
 
-1.³õÊ¼»¯dockerµÄGraphÇı¶¯£º</br>
+1.åˆå§‹åŒ–dockerçš„Graphé©±åŠ¨ï¼š</br>
 
 		dockerGraphDriver, err := graphdriver.New(*graphRoot, nil)
 		dockerGraph, err := graph.NewGraph(*graphRoot, dockerGraphDriver)
 
-2.È»ºó¹ÒÔØbtrfs¸ñÊ½»¯¹ıµÄÎÄ¼şÏµÍ³</br>
+2.ç„¶åæŒ‚è½½btrfsæ ¼å¼åŒ–è¿‡çš„æ–‡ä»¶ç³»ç»Ÿ</br>
 
 		graphMountPoint := mountPoint(logger, *graphRoot)
 
-3.ÉèÖÃgardenµÄ»ù±¾ÅäÖÃ</br>
+3.è®¾ç½®gardençš„åŸºæœ¬é…ç½®</br>
 
 		cake = &layercake.BtrfsCleaningCake{
 			Cake:            cake,
@@ -1313,22 +1319,22 @@ https://github.com/cloudfoundry-incubator/garden/blob/master/server/request_hand
 			Logger:          logger.Session("btrfs-cleanup"),
 		}
 		
-4.ÉèÖÃrepository_fetcher</br>
+4.è®¾ç½®repository_fetcher</br>
 
-ÀïÃæÓĞ4¸ö²ÎÊı£ºdockerRegistry,cake,map[registry.APIVersion]repository_fetcher.VersionedFetcher,repository_fetcher.EndpointPinger{}
-ÕâÀïÊÇ¸ù¾İ²»Í¬°æ±¾µÄregistry api°æ±¾ÉãÕßfetcherµ½×Ô¼ºµÄrepository_fetcherÀï</br>
+é‡Œé¢æœ‰4ä¸ªå‚æ•°ï¼šdockerRegistry,cake,map[registry.APIVersion]repository_fetcher.VersionedFetcher,repository_fetcher.EndpointPinger{}
+è¿™é‡Œæ˜¯æ ¹æ®ä¸åŒç‰ˆæœ¬çš„registry apiç‰ˆæœ¬æ‘„è€…fetcheråˆ°è‡ªå·±çš„repository_fetcheré‡Œ</br>
 
-5.ÉèÖÃuidNamespace,»®·Öuid gid·¶Î§</br>
+5.è®¾ç½®uidNamespace,åˆ’åˆ†uid gidèŒƒå›´</br>
 
 		rootFSNamespacer := &rootfs_provider.UidNamespacer
 		
-6.¸ü¾ßRootFsProviderÉèÖÃ rootfs_provider£º</br>
+6.æ›´å…·RootFsProviderè®¾ç½® rootfs_providerï¼š</br>
 
-		//dockerµÄrootfs
+		//dockerçš„rootfs
 		remoteRootFSProvider, err := rootfs_provider.NewDocker(fmt.Sprintf("docker-remote-%s", cake.DriverName()),
 		repoFetcher, cake, rootfs_provider.SimpleVolumeCreator{}, rootFSNamespacer, clock.NewClock())
 
-		//×Ô¼ÒwardenµÄrootfs
+		//è‡ªå®¶wardençš„rootfs
 		localRootFSProvider, err := rootfs_provider.NewDocker(fmt.Sprintf("docker-local-%s", cake.DriverName()),
 		&repository_fetcher.Local{
 			Cake:              cake,
@@ -1341,11 +1347,11 @@ https://github.com/cloudfoundry-incubator/garden/blob/master/server/request_hand
 			"docker": remoteRootFSProvider,
 		}
 	
-7.ÉèÖÃexternalIP£¬Êµ¼ÊÉÏÊÇlocal ip</br>
+7.è®¾ç½®externalIPï¼Œå®é™…ä¸Šæ˜¯local ip</br>
 
 	ip, err := localip.LocalIP()
 
-8.ÉèÖÃquotaManager ¸ù¾İgraphMountPointÅäÖÃÊôÓÚbtrfsµÄÅä¶î¹æÔò</br>
+8.è®¾ç½®quotaManager æ ¹æ®graphMountPointé…ç½®å±äºbtrfsçš„é…é¢è§„åˆ™</br>
 
 		var quotaManager linux_container.QuotaManager = quota_manager.DisabledQuotaManager{}
 		if !*disableQuotas {
@@ -1355,61 +1361,63 @@ https://github.com/cloudfoundry-incubator/garden/blob/master/server/request_hand
 			}
 		}
 
-9.ÅäÖÃÒ»Ğ©ÆäËü×ÊÔ´pool£¬iptables,mtu£¬subnetPoolµÈ£¬ºóÃæ¾ßÌå·ÖÎö</br>
+9.é…ç½®ä¸€äº›å…¶å®ƒèµ„æºpoolï¼Œiptables,mtuï¼ŒsubnetPoolç­‰ï¼Œåé¢å…·ä½“åˆ†æ</br>
 
-10.¸ù¾İÒÔÉÏµÄ×ÊÔ´·ÖÅä£¬ÉèÖÃlinux_backed</br>
+10.æ ¹æ®ä»¥ä¸Šçš„èµ„æºåˆ†é…ï¼Œè®¾ç½®linux_backed</br>
 
 		backend := linux_backend.New(logger, pool, container_repository.New(), injector, systemInfo, *snapshotsPath, int(*maxContainers))
 		err = backend.Setup()
 
-11.Èç¹ûÒÔÉÏ¶¼Ã»ÓĞ´í£¬Ôò¿ªÊ¼Æô¶¯gardenServer</br>
+11.å¦‚æœä»¥ä¸Šéƒ½æ²¡æœ‰é”™ï¼Œåˆ™å¼€å§‹å¯åŠ¨gardenServer</br>
 
 		graceTime := *containerGraceTime
 		gardenServer := server.New(*listenNetwork, *listenAddr, graceTime, backend, logger)
 		
 
----------------------------------------------------------------------------------------------------
-¹Ù·½ÓĞÁ½¸öÉæ¼°Í¼£ºÒ»¸öÊÇÈİÆ÷´´½¨¹ı³Ì£¬Ò»¸öÊÇgardenServerÈçºÎ¸úbackedºó¶Ë½ø³ÌÍ¨ĞÅµÄ</br>
+è‡³æ­¤garden-serverå¯åŠ¨å®Œæˆï¼Œå¼€å§‹æ¥æ”¶executorä¼ æ¥çš„å„ç§æ“ä½œå®¹å™¨çš„è¯·æ±‚</br>
+
+### backed
+å®˜æ–¹æœ‰ä¸¤ä¸ªæ¶‰åŠå›¾ï¼šä¸€ä¸ªæ˜¯å®¹å™¨åˆ›å»ºè¿‡ç¨‹ï¼Œä¸€ä¸ªæ˜¯gardenServerå¦‚ä½•è·Ÿbackedåç«¯è¿›ç¨‹é€šä¿¡çš„</br>
 ![Peter don't care](https://github.com/wdxxs2z/PictureStore/blob/master/diego/container%20creation.png)</br>
 
-ÈİÆ÷¹¹½¨ÆäÊµºÍÉÏÒ»´úµÄwardenÃ»ÓĞÊ²Ã´Çø±ğ£¬Çø±ğÔÚÓÚ**AcquirePoolResources**ºÍ**AcquireSystemResources**ÕâÁ½¸ö·½·¨</br>
+å®¹å™¨æ„å»ºå…¶å®å’Œä¸Šä¸€ä»£çš„wardenæ²¡æœ‰ä»€ä¹ˆåŒºåˆ«ï¼ŒåŒºåˆ«åœ¨äº**AcquirePoolResources**å’Œ**AcquireSystemResources**è¿™ä¸¤ä¸ªæ–¹æ³•</br>
 
-ÍêÈ«ÊÇÎªÁËÊÊÅädocker¶øÉú,¿´µ½resource_pool£º</br>
+* resource_pool:
 https://github.com/cloudfoundry-incubator/garden-linux/blob/master/resource_pool/resource_pool.go</br>
 
-Ö±½ÓÈ¥¿´ÀïÃæµÄAcquire,¿´Ò»ÏÂgardenÊÇÈçºÎÅäÖÃÈİÆ÷µÄ</br>
+ç›´æ¥å»çœ‹é‡Œé¢çš„Acquire,çœ‹ä¸€ä¸‹gardenæ˜¯å¦‚ä½•é…ç½®å®¹å™¨çš„</br>
 https://github.com/cloudfoundry-incubator/garden-linux/blob/master/resource_pool/resource_pool.go#L244</br>
 
 		(p *LinuxResourcePool) Acquire(spec garden.ContainerSpec) (linux_backend.LinuxContainerSpec, error)
 
-ÕâÀïÓĞ¸ö²ÎÊı£¬garden.ContainerSpec£¬Õâ¸ösPecÖµµÄÊÇÖ®Ç°ÎÒÃÇ¶¨ÒåcontainerµÄÒ»Ğ©²ÎÊı£¬»·¾³±äÁ¿ºÍ°²È«×éµÈµÈ</br>
+è¿™é‡Œæœ‰ä¸ªå‚æ•°ï¼Œgarden.ContainerSpecï¼Œè¿™ä¸ªsPecå€¼çš„æ˜¯ä¹‹å‰æˆ‘ä»¬å®šä¹‰containerçš„ä¸€äº›å‚æ•°ï¼Œç¯å¢ƒå˜é‡å’Œå®‰å…¨ç»„ç­‰ç­‰</br>
 
-1.·ÖÅäcontainer id ,container path,depotPathÒ»°ãÎª£º/var/vcap/data/garden/depot</br>
+1.åˆ†é…container id ,container path,depotPathä¸€èˆ¬ä¸ºï¼š/var/vcap/data/garden/depot</br>
 
-		containerID£ºid := <-p.containerIDs£¬
+		containerIDï¼šid := <-p.containerIDsï¼Œ
 		containerPath := path.Join(p.depotPath, id)
 		
-2.¿ªÊ¼»ñÈ¡poolResource</br>
+2.å¼€å§‹è·å–poolResource</br>
 
 		resources, err := p.acquirePoolResources(spec, id)
 		https://github.com/cloudfoundry-incubator/garden-linux/blob/master/resource_pool/resource_pool.go#L484
 
 		func (p *LinuxResourcePool) acquirePoolResources(spec garden.ContainerSpec, id string) (*linux_backend.Resources, error) {
-			//ÆäÊµÊÇCELLµÄIP
+			//å…¶å®æ˜¯CELLçš„IP
 			resources := linux_backend.NewResources(0, nil, "", nil, p.externalIP)
 			
-			//½âÎöspecÖĞµÄnetwork²¿·Ö
+			//è§£æspecä¸­çš„networkéƒ¨åˆ†
 			subnet, ip, err := parseNetworkSpec(spec.Network)
 			if err != nil {
 				return nil, fmt.Errorf("create container: invalid network spec: %v", err)
 			}
 
-			//¸ù¾İPrivilegedÅĞ¶ÏÊÇ·ñÊÇrootÈ¨ÏŞ£¬Èç¹ûÊÇuid¿Ï¶¨ÊÇ0£¬Ò»°ãÔÚbuild¾µÏñµÄÊ±ºòÕâ¸öÖµÒ»°ã¶¼Îªtrue£¬uidÎªroot
+			//æ ¹æ®Privilegedåˆ¤æ–­æ˜¯å¦æ˜¯rootæƒé™ï¼Œå¦‚æœæ˜¯uidè‚¯å®šæ˜¯0ï¼Œä¸€èˆ¬åœ¨buildé•œåƒçš„æ—¶å€™è¿™ä¸ªå€¼ä¸€èˆ¬éƒ½ä¸ºtrueï¼Œuidä¸ºroot
 			if err := p.acquireUID(resources, spec.Privileged); err != nil {
 				return nil, err
 			}
 
-			//¸ù¾İsubnetºÍipÉèÖÃresources.Network
+			//æ ¹æ®subnetå’Œipè®¾ç½®resources.Network
 			//https://github.com/cloudfoundry-incubator/garden-linux/blob/59c89dc849e992f5a5f7531889c493cfd844bc4d/network/subnets/subnets.go#L69
 			if resources.Network, err = p.subnetPool.Acquire(subnet, ip); err != nil {
 				p.releasePoolResources(resources)
@@ -1419,57 +1427,57 @@ https://github.com/cloudfoundry-incubator/garden-linux/blob/master/resource_pool
 			return resources, nil
 		}
 
-3.·ÖÅähandleId,Èç¹ûÏÈÇ°Ã»ÓĞ·ÖÅä£¬Ôò°ÑIDÉèÖÃ³ÉhandlerId</br>
+3.åˆ†é…handleId,å¦‚æœå…ˆå‰æ²¡æœ‰åˆ†é…ï¼Œåˆ™æŠŠIDè®¾ç½®æˆhandlerId</br>
 
 		handle := getHandle(spec.Handle, id)
 
-4.ÉèÖÃ´ÅÅÌÅä¶î</br>
+4.è®¾ç½®ç£ç›˜é…é¢</br>
 
 		var quota int64 = int64(spec.Limits.Disk.ByteHard)
 		if quota == 0 {
 			quota = math.MaxInt64
 		}
 
-5.ÉèÖÃcontainerRootFSPath, rootFSEnv£¬ÖØµãÊÇacquireSystemResources</br>
+5.è®¾ç½®containerRootFSPath, rootFSEnvï¼Œé‡ç‚¹æ˜¯acquireSystemResources</br>
 https://github.com/cloudfoundry-incubator/garden-linux/blob/master/resource_pool/resource_pool.go#L268</br>
 
 		containerRootFSPath, rootFSEnv, err := p.acquireSystemResources(id, handle, containerPath, spec.RootFSPath, resources, spec.BindMounts, quota, pLog)
 
-**spec.BindMounts**ÊÇÎÒÃÇ³£ËµµÄdocker volume</br>
+**spec.BindMounts**æ˜¯æˆ‘ä»¬å¸¸è¯´çš„docker volume</br>
 https://github.com/cloudfoundry-incubator/garden-linux/blob/master/resource_pool/resource_pool.go#L524</br>
 
-1).´´½¨containerPath</br>
+1).åˆ›å»ºcontainerPath</br>
 
 		os.MkdirAll(containerPath, 0755)
 		
-2).ÉèÖÃrootfsUrl dockerÒ»°ãÎªdocker:\\\</br>
-3).ÉèÖÃrootfsProviders£¬docker£¬warden</br>
+2).è®¾ç½®rootfsUrl dockerä¸€èˆ¬ä¸ºdocker:\\\</br>
+3).è®¾ç½®rootfsProvidersï¼Œdockerï¼Œwarden</br>
 
 		provider, found := p.rootfsProviders[rootfsURL.Scheme]
 		
-4).¸ù¾İ²»Í¬µÄproviderÉèÖÃ²»Í¬µÄrootfsPath</br>
+4).æ ¹æ®ä¸åŒçš„providerè®¾ç½®ä¸åŒçš„rootfsPath</br>
 
 		rootfsPath, rootFSEnvVars, err := provider.ProvideRootFS(pLog.Session("create-rootfs"), id, rootfsURL, resources.RootUID != 0, diskQuota)
 		
-dockerÒ»°ã»áÈ¥ÕÒ×Ô¼ºµÄlayer£¬ÕâÀïµÄlayerÒÑ¾­±»garden»¯ÁË£¬Ò²¾ÍÊÇÔÚbtrfsÄ¿Â¼ÏÂ</br>
-Èç¹ûÊÇÆÕÍ¨µÄbuildpack£¬Ôò»áÈ¥¼ÓÔØ×Ô¼ÒµÄrootfs£º/var/vcap/packages/rootfs_cflinuxfs2/rootfs</br>
+dockerä¸€èˆ¬ä¼šå»æ‰¾è‡ªå·±çš„layerï¼Œè¿™é‡Œçš„layerå·²ç»è¢«gardenåŒ–äº†ï¼Œä¹Ÿå°±æ˜¯åœ¨btrfsç›®å½•ä¸‹</br>
+å¦‚æœæ˜¯æ™®é€šçš„buildpackï¼Œåˆ™ä¼šå»åŠ è½½è‡ªå®¶çš„rootfsï¼š/var/vcap/packages/rootfs_cflinuxfs2/rootfs</br>
 
-5).Îªµ±Ç°ÈİÆ÷·ÖÅäÒ»¸öÍøÇÅ£¬Õâ¸öÉèÖÃÆäÊµÊÇÎªÁË·½±ãÍ¬Ò»¸öCELLÖĞµÄ²»Í¬ÈİÆ÷Í¨ĞÅÓÃµÄ£¬ÒòÎªÊµ¼ÊCIDRÎª/30µÄ»®·Ö£¬±¾Éí¾Í2¸öIP¿ÉÓÃ</br>
+5).ä¸ºå½“å‰å®¹å™¨åˆ†é…ä¸€ä¸ªç½‘æ¡¥ï¼Œè¿™ä¸ªè®¾ç½®å…¶å®æ˜¯ä¸ºäº†æ–¹ä¾¿åŒä¸€ä¸ªCELLä¸­çš„ä¸åŒå®¹å™¨é€šä¿¡ç”¨çš„ï¼Œå› ä¸ºå®é™…CIDRä¸º/30çš„åˆ’åˆ†ï¼Œæœ¬èº«å°±2ä¸ªIPå¯ç”¨</br>
 
-6).ÉèÖÃÍøÇÅÃû£ºÒ»°ãÒÔwb´òÍ· ºóÃæÊÇÈİÆ÷ID</br>
+6).è®¾ç½®ç½‘æ¡¥åï¼šä¸€èˆ¬ä»¥wbæ‰“å¤´ åé¢æ˜¯å®¹å™¨ID</br>
 
-7).ºóÃæ¾ÍÊÇÒ»Ğ©ÁĞµÄÈİÆ÷´´½¨¶¯×÷ÁË£¬´Ócreate.shÕâ¸ö½Å±¾¿ªÊ¼£¬ÉèÖÃ»·¾³±äÁ¿µÈ£¬È»ºó¿´µ½Ò»¸ö·½·¨£º</br>
+7).åé¢å°±æ˜¯ä¸€äº›åˆ—çš„å®¹å™¨åˆ›å»ºåŠ¨ä½œäº†ï¼Œä»create.shè¿™ä¸ªè„šæœ¬å¼€å§‹ï¼Œè®¾ç½®ç¯å¢ƒå˜é‡ç­‰ï¼Œç„¶åçœ‹åˆ°ä¸€ä¸ªæ–¹æ³•ï¼š</br>
 
 		err = p.writeBindMounts(containerPath, rootfsPath, bindMounts)
-		Ã¿¸öcontainerPathÏÂ¶¼ÓĞÒ»¸ölibÄ¿Â¼£¬ÀïÃæÓĞ¼¸¸ö½Å±¾£¬ÆäÊµ¿´µ½ºóÓ¦¸ÃºÜÊìÏ¤£¬ÔÚCFµÄv2°æÀïÒ²ÓĞ£¬ÓÃÀ´ÉèÖÃcgroup
-		hook-parent-before-clone.sh ÕâÀï¾Í²»·ÖÎöÕâÁË
+		æ¯ä¸ªcontainerPathä¸‹éƒ½æœ‰ä¸€ä¸ªlibç›®å½•ï¼Œé‡Œé¢æœ‰å‡ ä¸ªè„šæœ¬ï¼Œå…¶å®çœ‹åˆ°ååº”è¯¥å¾ˆç†Ÿæ‚‰ï¼Œåœ¨CFçš„v2ç‰ˆé‡Œä¹Ÿæœ‰ï¼Œç”¨æ¥è®¾ç½®cgroup
+		hook-parent-before-clone.sh è¿™é‡Œå°±ä¸åˆ†æè¿™äº†
 
-6.ÉÏÊöËùÓĞ¶¼´´½¨Íê³Éºó£¬¿ªÊ¼ºÏ²¢»·¾³±äÁ¿</br>
+6.ä¸Šè¿°æ‰€æœ‰éƒ½åˆ›å»ºå®Œæˆåï¼Œå¼€å§‹åˆå¹¶ç¯å¢ƒå˜é‡</br>
 
 		specEnv, err := process.NewEnv(spec.Env)
 		spec.Env = rootFSEnv.Merge(specEnv).Array()
 
-7.×îÖÕ·µ»ØÒ»¸ö½á¹¹Ìå£º</br>
+7.æœ€ç»ˆè¿”å›ä¸€ä¸ªç»“æ„ä½“ï¼š</br>
 
 		return linux_backend.LinuxContainerSpec{
 			ID:                  id,
@@ -1483,12 +1491,12 @@ dockerÒ»°ã»áÈ¥ÕÒ×Ô¼ºµÄlayer£¬ÕâÀïµÄlayerÒÑ¾­±»garden»¯ÁË£¬Ò²¾ÍÊÇÔÚbtrfsÄ¿Â¼ÏÂ</b
 			ContainerSpec: spec,
 		}, nil
 
-µ½ÕâÀïÈİÆ÷×ÊÔ´²¿·Ö¾ÍÒÑ¾­´´½¨ÍêÁË¡£
+åˆ°è¿™é‡Œå®¹å™¨èµ„æºéƒ¨åˆ†å°±å·²ç»åˆ›å»ºå®Œäº†ã€‚
 
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-* ÏÖÔÚ¿ÉÒÔ½«½¹µã¾Û½¹ÔÚÁ½¸öµØ·½£¬Ò»¸öÊÇgardenÊÇÈçºÎ¹¹½¨docker¾µÏñµÄ£¬Ò»¸öÊÇgardenÊÇÈçºÎ´´½¨ÍøÂçµÄ</br>
+### å­˜å‚¨æ ˆå’Œç½‘ç»œæ ˆ
+* ç°åœ¨å¯ä»¥å°†ç„¦ç‚¹èšç„¦åœ¨ä¸¤ä¸ªåœ°æ–¹ï¼Œä¸€ä¸ªæ˜¯gardenæ˜¯å¦‚ä½•æ„å»ºdockeré•œåƒçš„ï¼Œä¸€ä¸ªæ˜¯gardenæ˜¯å¦‚ä½•åˆ›å»ºç½‘ç»œçš„</br>
 
-		ÒòÎªÖ®Ç°¶¼ÓĞrootfsProvider£º
+		å› ä¸ºä¹‹å‰éƒ½æœ‰rootfsProviderï¼š
 		type RootFSProvider interface {
 			Name() string
 			ProvideRootFS(logger lager.Logger, id string, rootfs *url.URL, namespaced bool, quota int64) (mountpoint string, envvar process.Env, err error)
@@ -1498,48 +1506,48 @@ dockerÒ»°ã»áÈ¥ÕÒ×Ô¼ºµÄlayer£¬ÕâÀïµÄlayerÒÑ¾­±»garden»¯ÁË£¬Ò²¾ÍÊÇÔÚbtrfsÄ¿Â¼ÏÂ</b
 			layercake.Cake
 		}
 
-ÆäÖĞÏÂÃægraph£¬Èç¹ûÑĞ¾¿¹ıdockerÔ´Âë£¬Ó¦¸ÃÖªµÀdockerÓĞÒ»¸ögraph driverÓÃÀ´¹¹½¨layer×ö¿É¶ÑµşÎÄ¼şÏµÍ³µÄÇı¶¯£¬ÀïÃæÓĞºÜ¶àÊµÏÖ£¬Èçaufs,btrfs£¬»¹ÓĞ×Ô¼ÒµÄDeviceMapper£¬ÆäÊµ¾ÍÎªÁË´´½¨ÓÅÑÅµÄmetadata</br>
+å…¶ä¸­ä¸‹é¢graphï¼Œå¦‚æœç ”ç©¶è¿‡dockeræºç ï¼Œåº”è¯¥çŸ¥é“dockeræœ‰ä¸€ä¸ªgraph driverç”¨æ¥æ„å»ºlayeråšå¯å †å æ–‡ä»¶ç³»ç»Ÿçš„é©±åŠ¨ï¼Œé‡Œé¢æœ‰å¾ˆå¤šå®ç°ï¼Œå¦‚aufs,btrfsï¼Œè¿˜æœ‰è‡ªå®¶çš„DeviceMapperï¼Œå…¶å®å°±ä¸ºäº†åˆ›å»ºä¼˜é›…çš„metadata</br>
 
-ProvideRootFS£º¹¹½¨docker image</br>
+ProvideRootFSï¼šæ„å»ºdocker image</br>
 
-1.Ä¬ÈÏÉèÖÃÒ»¸ötag := "latest" </br>
+1.é»˜è®¤è®¾ç½®ä¸€ä¸ªtag := "latest" </br>
 
-2.fetch¾µÏñ</br>
+2.fetché•œåƒ</br>
 
 		fetchedID, envvars, volumes, err := provider.repoFetcher.Fetch(logger, url, tag, quota)
 		
-Èç¹ûÏëÖªµÀÊÇÈçºÎfetch²¢ÏÂÔØ¾µÏñµÄ£¬¿ÉÒÔ´ÓÕâÀïÈëÊÖ£º</br>
+å¦‚æœæƒ³çŸ¥é“æ˜¯å¦‚ä½•fetchå¹¶ä¸‹è½½é•œåƒçš„ï¼Œå¯ä»¥ä»è¿™é‡Œå…¥æ‰‹ï¼š</br>
 https://github.com/cloudfoundry-incubator/garden-linux/blob/4c869ef07d712cfe007c4ed1f81b576efa640c04/repository_fetcher/remote_v1.go</br>
 
-ÎÒÃÇÔÚÊ¹ÓÃdockerµÄÊ±ºò£¬ÔÚpull¾µÏñµÄÊ±ºò£¬Ò»°ã¸ñÊ½ÊÇsome-repository-name:target ²»¹ıÑÏ¸ñÉÏÀ´ËµÊÇdocker:///¼Ósome-repository-name:target</br>
-gardenÒ²²»ÀıÍâ£º</br>
+æˆ‘ä»¬åœ¨ä½¿ç”¨dockerçš„æ—¶å€™ï¼Œåœ¨pullé•œåƒçš„æ—¶å€™ï¼Œä¸€èˆ¬æ ¼å¼æ˜¯some-repository-name:target ä¸è¿‡ä¸¥æ ¼ä¸Šæ¥è¯´æ˜¯docker:///åŠ some-repository-name:target</br>
+gardenä¹Ÿä¸ä¾‹å¤–ï¼š</br>
 
-1).»ñÈ¡¾µÏñµÄmetadata</br>
+1).è·å–é•œåƒçš„metadata</br>
 
 		imgID, endpoints, err := fetcher.fetchImageMetadata(request)
 		
-2).Í¨¹ıµü´úendpoints£¬»ñÈ¡image,±ÈÈçÎÒÃÇÊ¹ÓÃdockerÊ±»á¿´µ½£º</br>
+2).é€šè¿‡è¿­ä»£endpointsï¼Œè·å–image,æ¯”å¦‚æˆ‘ä»¬ä½¿ç”¨dockeræ—¶ä¼šçœ‹åˆ°ï¼š</br>
 
 		31fa814ba25a: Pulling image (latest) from training/webapp, endpoint: https://reg31fa814ba25a: Pulling dependent layers
 		image, err := fetcher.fetchFromEndpoint(request, endpointURL, imgID, request.Logger)
 		
-¸ú½øÈ¥£ºhttps://github.com/cloudfoundry-incubator/garden-linux/blob/4c869ef07d712cfe007c4ed1f81b576efa640c04/repository_fetcher/remote_v1.go#L79</br>
+è·Ÿè¿›å»ï¼šhttps://github.com/cloudfoundry-incubator/garden-linux/blob/4c869ef07d712cfe007c4ed1f81b576efa640c04/repository_fetcher/remote_v1.go#L79</br>
 
-Ò»°ãÒ»¸öimage»á·ÖºÜ¶à²ã£¬ËùÒÔ»áÒ»²ãÒ»²ãµÄ»ñÈ¡£¬ÔÚ»ñÈ¡Ä³Ò»²ãÖ®Ç°»áÏÈ¼ì²éÕâÒ»²ãµÄlayerÊÇ·ñÒÑ¾­±»»º´æ¹ıÁË</br>
+ä¸€èˆ¬ä¸€ä¸ªimageä¼šåˆ†å¾ˆå¤šå±‚ï¼Œæ‰€ä»¥ä¼šä¸€å±‚ä¸€å±‚çš„è·å–ï¼Œåœ¨è·å–æŸä¸€å±‚ä¹‹å‰ä¼šå…ˆæ£€æŸ¥è¿™ä¸€å±‚çš„layeræ˜¯å¦å·²ç»è¢«ç¼“å­˜è¿‡äº†</br>
 
 		var allLayers []*dockerLayer
 		layer, err := fetcher.fetchLayer(request, endpointURL, history[i], remainingQuota, logger)
 		allLayers = append(allLayers, layer)
 		
-¼ÌĞø¸úµ½fetchLayer:</br>
+ç»§ç»­è·Ÿåˆ°fetchLayer:</br>
 https://github.com/cloudfoundry-incubator/garden-linux/blob/4c869ef07d712cfe007c4ed1f81b576efa640c04/repository_fetcher/remote_v1.go#L109</br>
 
 		func (fetcher *RemoteV1Fetcher) fetchLayer(request *FetchRequest, endpointURL string, layerID string, remaining int64, logger lager.Logger) (*dockerLayer, error)
-		¼ì²éÊÇ·ñ±»»º´æ£¬Èç¹ûÓĞ£¬ÔòÖ±½Ó·µ»ØÕâ¸ölayer£¬Ã»ÓĞµÄ£¬ÔòÍ¨¹ıÏÂÃæ¼ÌĞø»ñÈ¡£º
+		æ£€æŸ¥æ˜¯å¦è¢«ç¼“å­˜ï¼Œå¦‚æœæœ‰ï¼Œåˆ™ç›´æ¥è¿”å›è¿™ä¸ªlayerï¼Œæ²¡æœ‰çš„ï¼Œåˆ™é€šè¿‡ä¸‹é¢ç»§ç»­è·å–ï¼š
 		fetcher.Cake.Get(layercake.DockerImageID(layerID))
-		Ã¿´ÎÏÂÔØ¶¼»á¿ªÆô¼ÆÊ±£¬È»ºóÍ³¼ÆÏÂÔØÍê³ÉËùÓÃµÄÊ±¼ä£ºtook£¬×îºóÄã»á¿´µ½Á½ÖÖ×´Ì¬£¬Ò»¸öÊÇdownloadingºÍdownload
+		æ¯æ¬¡ä¸‹è½½éƒ½ä¼šå¼€å¯è®¡æ—¶ï¼Œç„¶åç»Ÿè®¡ä¸‹è½½å®Œæˆæ‰€ç”¨çš„æ—¶é—´ï¼štookï¼Œæœ€åä½ ä¼šçœ‹åˆ°ä¸¤ç§çŠ¶æ€ï¼Œä¸€ä¸ªæ˜¯downloadingå’Œdownload
 
-3.¸ù¾İimageIdºÍcontainerID¹¹½¨³ögarden×Ô¼ºµÄrootfs</br>
+3.æ ¹æ®imageIdå’ŒcontainerIDæ„å»ºå‡ºgardenè‡ªå·±çš„rootfs</br>
 
 		provider.graph.Create(containerID, imageID)
 
@@ -1553,21 +1561,21 @@ https://github.com/cloudfoundry-incubator/garden-linux/blob/964c92719378f8ef0bdb
 				}, nil)
 		}
 
-¿ÉÒÔ¿´µ½ÆäÊµgardenÔÚ´æ´¢×Ô¼ºµÄ¾µÏñÊ±£¬Ò»¸öÊÇcontainerId,Ò²¾ÍÊÇÊµÀıID£¬»¹ÓĞÒ»¸öÊÇËü»á¼ÇÂ¼Ò»·İdocker ImageµÄID</br>
+å¯ä»¥çœ‹åˆ°å…¶å®gardenåœ¨å­˜å‚¨è‡ªå·±çš„é•œåƒæ—¶ï¼Œä¸€ä¸ªæ˜¯containerId,ä¹Ÿå°±æ˜¯å®ä¾‹IDï¼Œè¿˜æœ‰ä¸€ä¸ªæ˜¯å®ƒä¼šè®°å½•ä¸€ä»½docker Imageçš„ID</br>
 
-4.Èç¹ûÓĞvolume£¬ÔòÔÚÈİÆ÷µÄgraphµÄÎÄ¼şÏµÍ³Àï´´½¨³öÒ»¸övolume,ÕâÀï¹Ù·½Ö»Ëµ£¬Ä¿Ç°Ö»ÊÇ¼òµ¥µÄÊµÏÖ´´½¨£¬»¹Ã»ÓĞ×öÈÎºÎ¹ÜÀí¡£</br>
+4.å¦‚æœæœ‰volumeï¼Œåˆ™åœ¨å®¹å™¨çš„graphçš„æ–‡ä»¶ç³»ç»Ÿé‡Œåˆ›å»ºå‡ºä¸€ä¸ªvolume,è¿™é‡Œå®˜æ–¹åªè¯´ï¼Œç›®å‰åªæ˜¯ç®€å•çš„å®ç°åˆ›å»ºï¼Œè¿˜æ²¡æœ‰åšä»»ä½•ç®¡ç†ã€‚</br>
 
-Í¨¹ı²é¿´ÈÕÖ¾£¬ÎÒÃÇµÃÖª£º645c4570fd120f7ed5bed9277886af4797e1874e3d5b571257b8ffdc6596bf9eÎª×îºóµÄimageId,È»ºóÎÒÃÇ»¹»á¿´µ½Ò»¸ö08on3iof61u£¬ËûÃÇ¶¼ÔÚ
-/var/vcap/data/garden/btrfs_graph/btrfs/subvolumes/Õâ¸öÄ¿Â¼ÏÂ£¬¸ù¾İ·ÖÎöµÄÔ´Âë£¬Ò²¾ÍÖªµÀÁËÕâ¸ö08on3iof61u¾ÍÊÇcontainerID.GraphID()£¬ÆäÊµÒ²ÊÇ´æ·ÅÈİÆ÷rootPathµÄµØ·½
+é€šè¿‡æŸ¥çœ‹æ—¥å¿—ï¼Œæˆ‘ä»¬å¾—çŸ¥ï¼š645c4570fd120f7ed5bed9277886af4797e1874e3d5b571257b8ffdc6596bf9eä¸ºæœ€åçš„imageId,ç„¶åæˆ‘ä»¬è¿˜ä¼šçœ‹åˆ°ä¸€ä¸ª08on3iof61uï¼Œä»–ä»¬éƒ½åœ¨
+/var/vcap/data/garden/btrfs_graph/btrfs/subvolumes/è¿™ä¸ªç›®å½•ä¸‹ï¼Œæ ¹æ®åˆ†æçš„æºç ï¼Œä¹Ÿå°±çŸ¥é“äº†è¿™ä¸ª08on3iof61uå°±æ˜¯containerID.GraphID()ï¼Œå…¶å®ä¹Ÿæ˜¯å­˜æ”¾å®¹å™¨rootPathçš„åœ°æ–¹
 /var/vcap/data/garden/depot/08on3iof61u</br>
 
-ÎÒÃÇ»¹ÄÜ¿´µ½Ò»¸öNamespacedLayerID£º645c4570fd120f7ed5bed9277886af4797e1874e3d5b571257b8ffdc6596bf9e@0-4294967294-1,1-1-4294967293+0-4294967294-1,1-1-4294967293</br>
+æˆ‘ä»¬è¿˜èƒ½çœ‹åˆ°ä¸€ä¸ªNamespacedLayerIDï¼š645c4570fd120f7ed5bed9277886af4797e1874e3d5b571257b8ffdc6596bf9e@0-4294967294-1,1-1-4294967293+0-4294967294-1,1-1-4294967293</br>
 		
 		func (n NamespacedLayerID) GraphID() string {
 			return shaID(n.LayerID + "@" + n.CacheKey)
 		}
 
-²¹Ò»¸öÖªÊ¶£¬ÔÚ¹¹½¨Ã¿Ò»²ãµÄÊ±ºò£¬¶¼»áÔÚÕâÒ»layerµÄ´´½¨jsonºÍsizeÊı¾İ£¬Õâ¸öºÍdockerÏà·û¡£</br>
+è¡¥ä¸€ä¸ªçŸ¥è¯†ï¼Œåœ¨æ„å»ºæ¯ä¸€å±‚çš„æ—¶å€™ï¼Œéƒ½ä¼šåœ¨è¿™ä¸€layerçš„åˆ›å»ºjsonå’Œsizeæ•°æ®ï¼Œè¿™ä¸ªå’Œdockerç›¸ç¬¦ã€‚</br>
 /var/vcap/data/garden/btrfs_graph/{layerId}</br>
 
 		{
@@ -1646,16 +1654,18 @@ https://github.com/cloudfoundry-incubator/garden-linux/blob/964c92719378f8ef0bdb
 
 		laylersize:0
 
-¿´µ½ÕâÀï£¬ÆäÊµ»¹ÓĞÒ»¸öÒÉÎÊ£¬¾ÍÊÇbtrfsÔõÃ´Ã»ÓĞ³öÏÖ£¬ÆäÊµbtrfsÔÚ´´½¨ºÍ¹ÒÔØºÃºó£¬ÎÒÃÇËùÓĞµÄ¾µÏñ²Ù×÷¶¼Ö»ÔÚbtrfsµÄÎÄ¼şÏµÍ³Àï²Ù×÷£¬ÖÁÓÚÔõÃ´ÊµÏÖ£¬ÕâÀï¾ÍºÍ
-gardenÎŞ¹ØÁË£¬ÒòÎªËüÒÀÀµµÄÊÇdockerµÄÊµÏÖ£¬copy on write »úÖÆ£¬Ëµµ½¾ßÌåÓÃ£¬¿ÉÄÜÄãÒ²²Âµ½ÁË£¬¾ÍÊÇÔÚÅä¶î¹ÜÀíµÄÊ±ºòÊ¹ÓÃ£º</br>
+çœ‹åˆ°è¿™é‡Œï¼Œå…¶å®è¿˜æœ‰ä¸€ä¸ªç–‘é—®ï¼Œå°±æ˜¯btrfsæ€ä¹ˆæ²¡æœ‰å‡ºç°ï¼Œå…¶å®btrfsåœ¨åˆ›å»ºå’ŒæŒ‚è½½å¥½åï¼Œæˆ‘ä»¬æ‰€æœ‰çš„é•œåƒæ“ä½œéƒ½åªåœ¨btrfsçš„æ–‡ä»¶ç³»ç»Ÿé‡Œæ“ä½œï¼Œè‡³äºæ€ä¹ˆå®ç°ï¼Œè¿™é‡Œå°±å’Œ
+gardenæ— å…³äº†ï¼Œå› ä¸ºå®ƒä¾èµ–çš„æ˜¯dockerçš„å®ç°ï¼Œcopy on write æœºåˆ¶ï¼Œè¯´åˆ°å…·ä½“ç”¨ï¼Œå¯èƒ½ä½ ä¹ŸçŒœåˆ°äº†ï¼Œå°±æ˜¯åœ¨é…é¢ç®¡ç†çš„æ—¶å€™ä½¿ç”¨ï¼š</br>
 https://github.com/cloudfoundry-incubator/garden-linux/blob/6b419ed1e7020930425adc05bc29602dc774eb16/linux_container/quota_manager/btrfs_quota_manager.go</br>
-ÕâÀï¾Í²»½øÈ¥ÁË£¬Ö÷ÒªÎªbtrfsµÄ´ÅÅÌÅä¶î½øĞĞÏŞÖÆºÍ»ñÈ¡btrfs´ÅÅÌÅä¶îµÄ¾ßÌåĞÅÏ¢µÈ¡£</br>
+è¿™é‡Œå°±ä¸è¿›å»äº†ï¼Œä¸»è¦ä¸ºbtrfsçš„ç£ç›˜é…é¢è¿›è¡Œé™åˆ¶å’Œè·å–btrfsç£ç›˜é…é¢çš„å…·ä½“ä¿¡æ¯ç­‰ã€‚</br>
 
 
-* ½ÓÏÂÀ´¿´¿´gardenÊÇÈçºÎ¹¹½¨ÍøÂçµÄ£º</br>
-ÎÒÃÇÖªµÀdockerÔÚ´´½¨ÍøÂçÊ±»á·ÖÈı²½£¬Ò»¸öÊÇÔÚdeamonÆô¶¯µÄÊ±ºò»á³õÊ¼»¯Ò»¸ödocker bridge,µÚ¶ş²½ÔòÔÚ´´½¨ÈİÆ÷µÄÊ±ºò»òÕßËµÆô¶¯µÄÊ±ºò»á·ÖÅäÒ»¸öveth pair£¬Ò»¶ËÔÚÈİÆ÷Àï£¬
-Ò»¶Ëpatchµ½dockerÍøÇÅÉÏ£¬×îºóÊÇ½«ÈİÆ÷Ò»¶ËµÄcontainer·ÖÅäµ½ÏÖÓĞµÄPIDÖĞÒ²¾ÍÊÇnamespaceÖĞ¡£</br>
-ÕâÀïgarden±È½ÏÌØ±ğ£¬Ëü»áÔÚÆô¶¯Ã¿¸öÈİÆ÷µÄÊ±ºò´´½¨vethµÄÍ¬Ê±»áÎªÃ¿¸ö×ÓÍø£¨CIDR 30£©´´½¨Ò»¸öbridge£¬²¢½«vethµÄÁíÒ»¶Ëpatchµ½Õâ¸öbridgeÉÏÈ¥</br>
+* æ¥ä¸‹æ¥çœ‹çœ‹gardenæ˜¯å¦‚ä½•æ„å»ºç½‘ç»œçš„:
+
+æˆ‘ä»¬çŸ¥é“dockeråœ¨åˆ›å»ºç½‘ç»œæ—¶ä¼šåˆ†ä¸‰æ­¥ï¼Œä¸€ä¸ªæ˜¯åœ¨deamonå¯åŠ¨çš„æ—¶å€™ä¼šåˆå§‹åŒ–ä¸€ä¸ªdocker bridge,ç¬¬äºŒæ­¥åˆ™åœ¨åˆ›å»ºå®¹å™¨çš„æ—¶å€™æˆ–è€…è¯´å¯åŠ¨çš„æ—¶å€™ä¼šåˆ†é…ä¸€ä¸ªveth pairï¼Œä¸€ç«¯åœ¨å®¹å™¨é‡Œï¼Œ
+ä¸€ç«¯patchåˆ°hostä¸Šï¼Œæœ€åæ˜¯å°†å®¹å™¨ä¸€ç«¯çš„containeråˆ†é…åˆ°ç°æœ‰çš„PIDä¸­ä¹Ÿå°±æ˜¯namespaceä¸­ã€‚</br>
+è¿™é‡Œgardenæ¯”è¾ƒç‰¹åˆ«ï¼Œå®ƒä¼šåœ¨å¯åŠ¨æ¯ä¸ªå®¹å™¨çš„æ—¶å€™åˆ›å»ºvethçš„åŒæ—¶ä¼šä¸ºæ¯ä¸ªå­ç½‘ï¼ˆCIDR /30ï¼‰åˆ›å»ºä¸€ä¸ªbridge,è¿™ä¸ªè®¾è®¡å®Œå…¨æ˜¯ä¸ºäº†ç”¨æˆ·æ–¹ä¾¿æŒ‡å®šå®¹å™¨IP,å› ä¸ºåˆ›å»ºçš„vethæ˜¯ä¸æ˜¾ç¤ºIPçš„</br>
+
 https://github.com/cloudfoundry-incubator/garden-linux/blob/master/network/configure.go#L55</br>
 
 * Bridge:
@@ -1668,10 +1678,10 @@ https://github.com/cloudfoundry-incubator/garden-linux/blob/master/network/confi
 			Add(bridge, slave *net.Interface) error
 		}
 		
-ÏÈÌáÇ°ËµÒ»ÏÂbridgeName»á·ÅÔÚÃ¿¸öÊµÀıÏÂµÄÒ»¸öbridge-nameÎÄ¼şÀï£º</br>
-/var/vcap/data/garden/depot/08on3iof61u£ºwb-08on3ioescs0</br>
+å…ˆæå‰è¯´ä¸€ä¸‹bridgeNameä¼šæ”¾åœ¨æ¯ä¸ªå®ä¾‹ä¸‹çš„ä¸€ä¸ªbridge-nameæ–‡ä»¶é‡Œï¼š</br>
+/var/vcap/data/garden/depot/08on3iof61uï¼šwb-08on3ioescs0</br>
 
-		//name¾ÍÊÇÍøÇÅÃû£¬ipÊÇÍøÇÅµÄip£¬subnetÊÇ×ÓÍø Ò»°ãÊÇcidr /30,¾ßÌåÊµÏÖÔÚdockerµÄlibcontainer/netlinkÏÂ
+		//nameå°±æ˜¯ç½‘æ¡¥åï¼Œipæ˜¯ç½‘æ¡¥çš„ipï¼Œsubnetæ˜¯å­ç½‘ ä¸€èˆ¬æ˜¯cidr /30,å…·ä½“å®ç°åœ¨dockerçš„libcontainer/netlinkä¸‹
 		func (Bridge) Create(name string, ip net.IP, subnet *net.IPNet) (intf *net.Interface, err error) {
 			netlinkMu.Lock()
 			defer netlinkMu.Unlock()
@@ -1691,7 +1701,7 @@ https://github.com/cloudfoundry-incubator/garden-linux/blob/master/network/confi
 		}
 
 * Veth:
-hostIfcNameÎªÈİÆ÷ÄÚÖ÷»úµÄÃû³Æ£¬containerIfcNameÎªÈİÆ÷ÊµÀıÃû</br>
+hostIfcNameä¸ºå®¹å™¨å†…ä¸»æœºçš„åç§°ï¼ŒcontainerIfcNameä¸ºå®¹å™¨å®ä¾‹å</br>
 
 		func (VethCreator) Create(hostIfcName, containerIfcName string) (host, container *net.Interface, err error) {
 			netlinkMu.Lock()
@@ -1712,18 +1722,20 @@ hostIfcNameÎªÈİÆ÷ÄÚÖ÷»úµÄÃû³Æ£¬containerIfcNameÎªÈİÆ÷ÊµÀıÃû</br>
 			return host, container, nil
 		}
 		
-È»ºó¾ÍÊÇ½«vethµÄÁíÒ»¶ËºÍbridge´®ÆğÀ´£º</br>
+ç„¶åbridge add åˆ°hostä¸Šï¼š</br>
 
 		c.configureHostIntf(cLog, host, bridge, config.Mtu)
+		|
+		---> c.Bridge.Add(bridge, intf)
 
-×îºóÔÚ½«containerµÄÄ©¶ËIP¼ÓÈëµ½namespaceÖĞÈ¥£º</br>
+æœ€ååœ¨å°†containerç«¯vethåŠ å…¥åˆ°namespaceä¸­å»ï¼š</br>
 
 		// move container end in to container
 		if err = c.Link.SetNs(container, config.ContainerPid); err != nil {
 			return &SetNsFailedError{err, container, config.ContainerPid}
 		}
 
-ÖÁ´ËÎÒÃÇÀ´¿´Ò»ÏÂ¾ßÌåµÄÍøÂçÇé¿ö£¬Õâ¸öÊ±ºòÎÒÃÇÒÑ¾­ÉÏ´«ÁËÒ»¸ödockerÓ¦ÓÃ£º</br>
+è‡³æ­¤æˆ‘ä»¬æ¥çœ‹ä¸€ä¸‹å…·ä½“çš„ç½‘ç»œæƒ…å†µï¼Œè¿™ä¸ªæ—¶å€™æˆ‘ä»¬å·²ç»ä¸Šä¼ äº†ä¸€ä¸ªdockeråº”ç”¨ï¼š</br>
 
 		w08on3iof61u-0 Link encap:Ethernet  HWaddr 6a:54:f3:2f:23:00  
 				  inet6 addr: fe80::6854:f3ff:fe2f:2300/64 Scope:Link
