@@ -628,6 +628,54 @@ db.auctioneerClient.RequestTaskAuctions(tasksToAuction)</br>
 最后就剩下需要清理的无效任务了</br>
 
 		db.batchDeleteTasks(keysToDelete, logger)
+		
+* 处理Crashed 状态的ActualLRPs
 
+Converger还有个作用是重启已经崩溃的ActualLRPs,这里所指的crashed是已经被认定这个实例确实已经奔溃了，因为还有一个组件Rep也会监视这个CrashCount,当crashCount小于3的时候，
+rep都会尝试着去重启，如果还是crashed，这个时候就会累计crashCount,这个时候还不能严格的说这个ActualLRPs奔溃了，直到超过3，rep修改ActualLRPs的状态为crashed,说明ActualLRP确实奔溃了，这时候Converger就开始
+出来调谐:
 
+		changes := &models.ConvergenceChanges{}
+		
+		https://github.com/cloudfoundry-incubator/bbs/blob/3a3eea2cb8e38861654e6cc2a8206fc2374fb581/db/etcd/lrp_convergence.go#L356
+		
+		if actual.ShouldRestartCrash(now, restartCalculator) {
+			pLog.Info("restart-crash", lager.Data{"index": i})
+			changes.RestartableCrashedActualLRPs = append(changes.RestartableCrashedActualLRPs, actual)
+			continue
+		}
+		
+		//跟到ShouldRestartCrash
+		https://github.com/cloudfoundry-incubator/bbs/blob/3a3eea2cb8e38861654e6cc2a8206fc2374fb581/models/actual_lrp.go#L103
+		func (actual ActualLRP) ShouldRestartCrash(now time.Time, calc RestartCalculator) bool {
+			//状态还没有被改变,返回false
+			if actual.State != ActualLRPStateCrashed {
+				return false
+			}
+			return calc.ShouldRestart(now.UnixNano(), actual.Since, actual.CrashCount)
+		}
+		
+		//ShouldRestart
+		https://github.com/cloudfoundry-incubator/bbs/blob/3bd49b7b9beb14515f6c42a80dc103a49c76e4dd/models/restart_calculator.go#L68
+		func (r RestartCalculator) ShouldRestart(now, crashedAt int64, crashCount int32) bool {
+			switch {
+			case crashCount < r.ImmediateRestarts:
+				return true
 
+			//MaxRestartAttempts:最大重启个数
+			case crashCount < r.MaxRestartAttempts:
+				backoffDuration := exponentialBackoff(crashCount-r.ImmediateRestarts, r.MaxBackoffCount)
+				if backoffDuration > r.MaxBackoffDuration {
+					backoffDuration = r.MaxBackoffDuration
+				}
+				nextRestartTime := crashedAt + backoffDuration.Nanoseconds()
+				//每间隔一段时间就重启一次
+				if nextRestartTime <= now {
+					return true
+				}
+			}
+
+			return false
+		}
+		
+假如超过了MaxRestartAttempts，那么这个实例最终将被停止，不在启动。
