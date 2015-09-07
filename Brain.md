@@ -629,9 +629,9 @@ db.auctioneerClient.RequestTaskAuctions(tasksToAuction)</br>
 
 		db.batchDeleteTasks(keysToDelete, logger)
 		
-* 处理Crashed 状态的ActualLRPs
+#### 处理Crashed 状态的ActualLRPs
 
-Converger还有个作用是重启已经崩溃的ActualLRPs,这里所指的crashed是已经被认定这个实例确实已经奔溃了，因为还有一个组件Rep也会监视这个CrashCount,当crashCount小于3的时候，
+Converger还有个作用是重启已经崩溃的ActualLRPs,这里所指的crashed是已经被认定这个实例确实已经奔溃了，因为还有一个组件**Rep**也会监视这个CrashCount,当crashCount小于3的时候，
 rep都会尝试着去重启，如果还是crashed，这个时候就会累计crashCount,这个时候还不能严格的说这个ActualLRPs奔溃了，直到超过3，rep修改ActualLRPs的状态为crashed,说明ActualLRP确实奔溃了，这时候Converger就开始
 出来调谐:
 
