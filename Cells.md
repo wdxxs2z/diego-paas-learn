@@ -1192,7 +1192,7 @@ Garden:
 		  ]
 		}
 
-好了，我们来看看容器是怎么创建的：</br>
+#### 容器的创建：</br>
 https://github.com/cloudfoundry-incubator/garden/blob/master/server/request_handling.go#L52</br>
 
 		func (s *GardenServer) handleCreate(w http.ResponseWriter, r *http.Request) {
@@ -1292,13 +1292,13 @@ https://github.com/cloudfoundry-incubator/garden/blob/master/server/request_hand
 			return json.NewDecoder(response).Decode(res)
 		}
 
-### 继续往garden-linux看吧，这是个庞大，也是整个系统里最核心的部分了
+#### 继续往garden-linux看吧，这是个庞大，也是整个系统里最核心的部分了
 
 * garden-linux
 
-当garden-server给garden-linux发出建立容器的和运行容器的任务的时候，后端即开始执行相应的操作</br>
+	当garden-server给garden-linux发出建立容器的和运行容器的任务的时候，后端即开始执行相应的操作</br>
 
-其中**garden-server**在启动的过程：</br>
+##### 其中**garden-server**在启动的过程：</br>
 
 1.初始化docker的Graph驱动：</br>
 
@@ -1376,7 +1376,7 @@ https://github.com/cloudfoundry-incubator/garden/blob/master/server/request_hand
 
 至此garden-server启动完成，开始接收executor传来的各种操作容器的请求</br>
 
-### backed
+##### Backed
 官方有两个涉及图：一个是容器创建过程，一个是gardenServer如何跟backed后端进程通信的</br>
 ![Peter don't care](https://github.com/wdxxs2z/PictureStore/blob/master/diego/container%20creation.png)</br>
 
@@ -1493,8 +1493,11 @@ docker一般会去找自己的layer，这里的layer已经被garden化了，也�
 
 到这里容器资源部分就已经创建完了。
 
-### 存储栈和网络栈
+#### 存储栈和网络栈
+
 * 现在可以将焦点聚焦在两个地方，一个是garden是如何构建docker镜像的，一个是garden是如何创建网络的</br>
+
+##### Docker存储栈
 
 		因为之前都有rootfsProvider：
 		type RootFSProvider interface {
@@ -1546,6 +1549,10 @@ https://github.com/cloudfoundry-incubator/garden-linux/blob/4c869ef07d712cfe007c
 		检查是否被缓存，如果有，则直接返回这个layer，没有的，则通过下面继续获取：
 		fetcher.Cake.Get(layercake.DockerImageID(layerID))
 		每次下载都会开启计时，然后统计下载完成所用的时间：took，最后你会看到两种状态，一个是downloading和download
+		
+**如果关注一下最近docker的进展，docker其实有register V2版，如果使用v2，内容则更加的简洁，会发现少了fetchFromEndPoint,这只是冰山一角，由于V2的加入使得V1的镜像需要向V2迁移，
+而docker1.6的版本支持register v1和v2共存。**
+
 
 3.根据imageId和containerID构建出garden自己的rootfs</br>
 
@@ -1561,7 +1568,28 @@ https://github.com/cloudfoundry-incubator/garden-linux/blob/964c92719378f8ef0bdb
 				}, nil)
 		}
 
-可以看到其实garden在存储自己的镜像时，一个是containerId,也就是实例ID，还有一个是它会记录一份docker Image的ID</br>
+可以看到其实garden在存储自己的镜像时，一个是containerId,也就是garden构建好的镜像ID，还有一个是它会记录一份docker Image的ID。因为是btrfs,我们继续跟到docker的btrfs下面</br>
+
+1).在创建完subvolumes目录时，后面会检查这个image有没有parent,如果没有则在此目录构建一个base目录，目录名为imageID </br>
+
+		if parent == "" {
+			//https://github.com/docker/docker/blob/master/daemon/graphdriver/btrfs/btrfs.go#L118 还是继续调用创建btrfs的C代码
+			if err := subvolCreate(subvolumes, id); err != nil {
+				return err
+			}
+			
+2).假如这个image有父镜像，则先获取这个父镜像的目录，然后根据btrfs的特点创建snapshot 快照，而我们知道快照是只读的，只有对其做了clone才有可读写特性</br>
+		
+		else {
+			parentDir, err := d.Get(parent, "")
+			if err != nil {
+				return err
+			}
+			//https://github.com/docker/docker/blob/master/daemon/graphdriver/btrfs/btrfs.go#L138 此处涉及到C编码
+			if err := subvolSnapshot(parentDir, subvolumes, id); err != nil {
+				return err
+			}
+		}
 
 4.如果有volume，则在容器的graph的文件系统里创建出一个volume,这里官方只说，目前只是简单的实现创建，还没有做任何管理。</br>
 
@@ -1660,7 +1688,7 @@ https://github.com/cloudfoundry-incubator/garden-linux/blob/6b419ed1e7020930425a
 这里就不进去了，主要为btrfs的磁盘配额进行限制和获取btrfs磁盘配额的具体信息等。</br>
 
 
-* 接下来看看garden是如何构建网络的:
+##### 接下来看看garden是如何构建网络的:
 
 我们知道docker在创建网络时会分三步，一个是在deamon启动的时候会初始化一个docker bridge,第二步则在创建容器的时候或者说启动的时候会分配一个veth pair，一端在容器里，
 一端patch到host上，最后是将容器一端的container分配到现有的PID中也就是namespace中。</br>
