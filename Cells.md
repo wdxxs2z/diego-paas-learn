@@ -1593,6 +1593,12 @@ https://github.com/cloudfoundry-incubator/garden-linux/blob/964c92719378f8ef0bdb
 
 4.如果有volume，则在容器的graph的文件系统里创建出一个volume,这里官方只说，目前只是简单的实现创建，还没有做任何管理。</br>
 
+** Bug: 经过测试发现，如果在Dockerfile中设置了volume,比如我的应用就是一个mysql，所有的数据都在mysql的data目录里，而这个data目录是volume,cf会报一个没有权限创建此目录的错。
+
+		2015-09-11T07:12:30.94+0000 [API/0]      OUT App instance exited with guid 9500cb65-9d06-4f88-baa2-9fb0576c16af payload: {"instance"=>"c5280d07-2666-4218-573f-fc7a058f2c85", "index"=>0, "reason"=>"CRASHED", "exit_description"=>"2 error(s) occurred:\n\n* Exited with status 1\n* 2 error(s) occurred:\n\n* cancelled\n* cancelled", "crash_count"=>3, "crash_timestamp"=>1441955550920157081, "version"=>"f0a3cce6-93ce-4ed0-a335-e44f5d62637c"}
+		OUT Cannot change ownership of the database directories to the 'mysql'
+		ERR chown: changing ownership of '/data': Operation not permitted		
+
 通过查看日志，我们得知：645c4570fd120f7ed5bed9277886af4797e1874e3d5b571257b8ffdc6596bf9e为最后的imageId,然后我们还会看到一个08on3iof61u，他们都在
 /var/vcap/data/garden/btrfs_graph/btrfs/subvolumes/这个目录下，根据分析的源码，也就知道了这个08on3iof61u就是containerID.GraphID()，其实也是存放容器rootPath的地方
 /var/vcap/data/garden/depot/08on3iof61u</br>
