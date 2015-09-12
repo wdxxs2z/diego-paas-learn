@@ -20,6 +20,8 @@ Diego还是给我们带来了些惊喜，比如在某些时候(--exportNetworkEn
 
 缺点和目前所有容器化一样，网络问题，假如采用ovs的gre/vxlan方式,可能在外层会更不方便管理多租户的情况和网络ip冲突问题,会增加系统设计的复杂度,而不具备通用性,更好的设计应该是根据特定的情况开启SDN功能。</br>
 
+如果Dockerfile中有volume的，或有环境变量的，在使用cf docker-push的时候会很不方便，且目前diego对带有volume，volume的权限还没有封装，所以像mysql，postgresql等数据库服务的镜像还不支持，可以尝试，一定会报权限不足的问题。</br>
+
 接下来，我将按照上述顺序进行学习。
 </br>
 
