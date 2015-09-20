@@ -134,8 +134,9 @@ container_daemon:Process -> container_daemon:proc_starter -> linux_container:run
 
 在Linux内核2.2.x中能用如下命令修改： </br>
 
-# echo ’8192’ > /proc/sys/fs/file-max</br>
-# echo ’32768’ > /proc/sys/fs/inode-max </br>
+		echo ’8192’ > /proc/sys/fs/file-max
+		echo ’32768’ > /proc/sys/fs/inode-max 
+
 并将以上命令加到/etc/rc.c/rc.local文件中，以使系统每次重新启动时设置以上值。 </br>
 在Linux内核2.4.x中需要修改原始码，然后重新编译内核才生效。编辑Linux内核原始码中的 include/linux/fs.h文件，将 NR_FILE 由8192改为 65536，将NR_RESERVED_FILES 由10 改为 128。编辑fs/inode.c 文件将 MAX_INODE 由16384改为262144。 </br>
 一般情况下，最大打开文件数比较合理的设置为每4M物理内存256，比如256M内存能设为16384，而最大的使用的i节点的数目应该是最大打开文件数目的3倍到4倍。
