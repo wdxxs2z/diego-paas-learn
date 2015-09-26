@@ -53,12 +53,12 @@
 
 4.下载一个测试APP并通过命令上传到CF</br>
 
-*先搞定插件，不过这个在之前使用docker时已经安装过了</br>
+* 先搞定插件，不过这个在之前使用docker时已经安装过了</br>
 		
 		cf install-plugin -r CF-Community Diego-Beta
 		cf install-plugin -r CF-Community Diego-SSH
 		
-*上传应用</br>
+* 上传应用</br>
 		
 		git clone https://github.com/Canopy-OCTO/cip-windows-test-app
 		cd cip-windows-test-app
@@ -67,7 +67,7 @@
 		cf disable-ssh dotnet-test-app
 		cf start dotnet-test-app
 		
-*scale应用</br>
+* scale应用</br>
 
 		cf scale dotnet-test-app -i 3
 		
@@ -83,14 +83,14 @@
 ![Peter don't care](https://github.com/wdxxs2z/PictureStore/blob/master/diego/process.JPG) <br />
 
 ## 观察容器目录结构
-*主目录
+* 主目录</br>
 ![Peter don't care](https://github.com/wdxxs2z/PictureStore/blob/master/diego/containerdir.JPG) <br />
-*容器内部user目录
+* 容器内部user目录</br>
 ![Peter don't care](https://github.com/wdxxs2z/PictureStore/blob/master/diego/content.JPG) <br />
-*lifecycle目录
+* lifecycle目录</br>
 ![Peter don't care](https://github.com/wdxxs2z/PictureStore/blob/master/diego/lifecycle.JPG) <br />
 
-可以看到几个熟悉的进程。
+可以看到几个熟悉的进程。</br>
 
 ## 应用的环境变量
 
