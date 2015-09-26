@@ -75,10 +75,10 @@
 		
 5.如果成功，可以到这个windows主机上看看一些行为</br>
 
-*守护进程Guard，每启动一个实例，便会增加一个,管理员权限</br>
-*IronFrame.Host 隔离主机，以C打头的容器用户</br>
-*launcher 启动进程，主要是联合一些.net动态库，最终将程序run起来,以C打头的容器用户</br>
-*WebAppserver 应用程序进程，以C打头的容器用户,以上这些进程都是实例有多少就会启动多少</br>
+* 守护进程**Guard**，每启动一个实例，便会增加一个,管理员权限</br>
+* **IronFrame.Host** 隔离主机，以C打头的容器用户</br>
+* **launcher** 启动进程，主要是联合一些.net动态库，最终将程序run起来,以C打头的容器用户</br>
+* **WebAppserver** 应用程序进程，以C打头的容器用户,以上这些进程都是实例有多少就会启动多少</br>
 
 ![Peter don't care](https://github.com/wdxxs2z/PictureStore/blob/master/diego/process.JPG) <br />
 
