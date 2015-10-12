@@ -307,6 +307,33 @@ https://github.com/cloudfoundry-incubator/auction/blob/fcf9393a3a76b2883ebe0eadf
 			return resourceScore
 		}
 		
+继续向上跟进:</br>
+
+		if score < winnerScore {
+			winnerScore = score
+			winnerCell = cell
+		}
+		
+从这点可以看出谁得分小，谁将最后得到资源的分配，自己举个例子：
+
+		func score_A() {
+			fractionUsedMemory := 1.0 - float64(256)/float64(1024)
+			fractionUsedDisk := 1.0 - float64(512)/float64(1024)
+			fractionUsedContainers := 1.0 - float64(192)/float64(256)
+
+			resourceScore := (fractionUsedMemory + fractionUsedDisk + fractionUsedContainers) / 3.0
+		}
+
+		func score_B() {
+			fractionUsedMemory := 1.0 - float64(512)/float64(1024)
+			fractionUsedDisk := 1.0 - float64(128)/float64(1024)
+			fractionUsedContainers := 1.0 - float64(195)/float64(256)
+
+			resourceScore := (fractionUsedMemory + fractionUsedDisk + fractionUsedContainers) / 3.0
+		}
+		
+**A的得分为:0.5   B的得分为:0.5377604166666666 则可看出A将胜出，从实际上看B在磁盘剩余量上没有A的多，而且是少很多，只有128M磁盘空间剩余，所以这个算法是合理的。**
+		
 6.如果一切都OK，最后将LRP的action存储起来</br>
 
 		func (c *Cell) ReserveLRP(lrpAuction auctiontypes.LRPAuction) error {
